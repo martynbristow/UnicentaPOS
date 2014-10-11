@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.scanpal2;
 
@@ -24,8 +24,11 @@ import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
-import com.openbravo.pos.util.StringUtils;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class DeviceScannerComm implements DeviceScanner, SerialPortEventListener {
 
     private CommPortIdentifier m_PortIdPrinter;
@@ -59,6 +62,10 @@ public class DeviceScannerComm implements DeviceScanner, SerialPortEventListener
         m_in = null;
     }
 
+    /**
+     *
+     * @throws DeviceScannerException
+     */
     public void connectDevice() throws DeviceScannerException {    
         
         try {
@@ -98,6 +105,9 @@ public class DeviceScannerComm implements DeviceScanner, SerialPortEventListener
         }       
     }
     
+    /**
+     *
+     */
     public void disconnectDevice() {
         
         try {
@@ -119,10 +129,20 @@ public class DeviceScannerComm implements DeviceScanner, SerialPortEventListener
         m_in = null;      
     }
     
+    /**
+     *
+     * @throws DeviceScannerException
+     */
     public void startDownloadProduct() throws DeviceScannerException {
         writeLine(COMMAND_READ); // writeLine(COMMAND_READ);
         readCommand(COMMAND_ACK);
     }
+
+    /**
+     *
+     * @return
+     * @throws DeviceScannerException
+     */
     public ProductDownloaded recieveProduct() throws DeviceScannerException {
         byte[] line = readLine();
         if (checkCommand(COMMAND_OVER, line)) {
@@ -152,12 +172,24 @@ public class DeviceScannerComm implements DeviceScanner, SerialPortEventListener
         }
     }
     
+    /**
+     *
+     * @throws DeviceScannerException
+     */
     public void startUploadProduct() throws DeviceScannerException {
         // Inicializamos la conversacion
         writeLine(COMMAND_CIPHER);
         readCommand(COMMAND_ACK);      
         m_iProductOrder = 0;
     }
+
+    /**
+     *
+     * @param sName
+     * @param sCode
+     * @param dPrice
+     * @throws DeviceScannerException
+     */
     public void sendProduct(String sName, String sCode, Double dPrice) throws DeviceScannerException {
         
         m_iProductOrder++;
@@ -184,6 +216,11 @@ public class DeviceScannerComm implements DeviceScanner, SerialPortEventListener
         writeLine(lineout.toByteArray());
         readCommand(COMMAND_ACK);
     }
+
+    /**
+     *
+     * @throws DeviceScannerException
+     */
     public void stopUploadProduct() throws DeviceScannerException {
         // Cerramos la conversacion
         writeLine(COMMAND_OVER);
@@ -292,6 +329,10 @@ public class DeviceScannerComm implements DeviceScanner, SerialPortEventListener
         }      
     }
     
+    /**
+     *
+     * @param e
+     */
     public void serialEvent(SerialPortEvent e) {
 
 	// Determine type of event.

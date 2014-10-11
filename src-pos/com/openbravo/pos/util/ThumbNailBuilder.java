@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.util;
 
@@ -24,22 +24,40 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class ThumbNailBuilder {
     
     private Image m_imgdefault;
     private int m_width;
     private int m_height;
     
-    /** Creates a new instance of ThumbNailBuilder */    
+    /** Creates a new instance of ThumbNailBuilder
+     * @param width
+     * @param height */    
     public ThumbNailBuilder(int width, int height) {
         init(width, height, null);
     }
     
+    /**
+     *
+     * @param width
+     * @param height
+     * @param imgdef
+     */
     public ThumbNailBuilder(int width, int height, Image imgdef) {
         init(width, height, imgdef);
       
     }
     
+    /**
+     *
+     * @param width
+     * @param height
+     * @param img
+     */
     public ThumbNailBuilder(int width, int height, String img) {
         
         Image defimg;
@@ -60,6 +78,11 @@ public class ThumbNailBuilder {
         } 
     }
     
+    /**
+     *
+     * @param img
+     * @return
+     */
     public Image getThumbNail(Image img) {
    
         if (img == null) {
@@ -67,8 +90,14 @@ public class ThumbNailBuilder {
         } else {
             return createThumbNail(img);
         }     
-    }      
-    
+    }
+
+    /**
+     *
+     * @param img
+     * @param text
+     * @return
+     */
     public Image getThumbNailText(Image img, String text) {
                 
         img = getThumbNail(img);

@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2008-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.sales;
 
@@ -28,7 +28,6 @@ import com.openbravo.pos.ticket.TicketTaxInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,15 +42,22 @@ public class TaxesLogic {
     
     private Map<String, TaxesLogicElement> taxtrees;
     
+    /**
+     *
+     * @param taxlist
+     */
     public TaxesLogic(List<TaxInfo> taxlist) {
         this.taxlist = taxlist;
       
-        taxtrees = new HashMap<String, TaxesLogicElement>();
+// JG June 2013 use diamond inference
+        taxtrees = new HashMap<>();
                 
         // Order the taxlist by Application Order...
-        List<TaxInfo> taxlistordered = new ArrayList<TaxInfo>();
+        // JG June 2013 use diamond inference        
+        List<TaxInfo> taxlistordered = new ArrayList<>();
         taxlistordered.addAll(taxlist);
         Collections.sort(taxlistordered, new Comparator<TaxInfo>() {
+            @Override
             public int compare(TaxInfo o1, TaxInfo o2) {
                 if (o1.getApplicationOrder() < o2.getApplicationOrder()) {
                     return -1;
@@ -64,7 +70,8 @@ public class TaxesLogic {
         });
         
         // Generate the taxtrees
-        HashMap<String, TaxesLogicElement> taxorphans = new HashMap<String, TaxesLogicElement>();
+        // JG June 2013 use diamond inference        
+        HashMap<String, TaxesLogicElement> taxorphans = new HashMap<>();
         
         for (TaxInfo t : taxlistordered) {
                        
@@ -97,9 +104,15 @@ public class TaxesLogic {
         }
     }
     
+    /**
+     *
+     * @param ticket
+     * @throws TaxesException
+     */
     public void calculateTaxes(TicketInfo ticket) throws TaxesException {
   
-        List<TicketTaxInfo> tickettaxes = new ArrayList<TicketTaxInfo>(); 
+        // JG June 2013 use diamond inference
+        List<TicketTaxInfo> tickettaxes = new ArrayList<>(); 
         
         for (TicketLineInfo line: ticket.getLines()) {
             tickettaxes = sumLineTaxes(tickettaxes, calculateTaxes(line));
@@ -108,6 +121,12 @@ public class TaxesLogic {
         ticket.setTaxes(tickettaxes);
     }
     
+    /**
+     *
+     * @param line
+     * @return
+     * @throws TaxesException
+     */
     public List<TicketTaxInfo> calculateTaxes(TicketLineInfo line) throws TaxesException {
         
         TaxesLogicElement taxesapplied = getTaxesApplied(line.getTaxInfo());
@@ -116,7 +135,8 @@ public class TaxesLogic {
     
     private List<TicketTaxInfo> calculateLineTaxes(double base, TaxesLogicElement taxesapplied) {
  
-        List<TicketTaxInfo> linetaxes = new ArrayList<TicketTaxInfo>();
+        // JG June 2013 use diamond inference
+        List<TicketTaxInfo> linetaxes = new ArrayList<>();
         
         if (taxesapplied.getSons().isEmpty()) {           
             TicketTaxInfo tickettax = new TicketTaxInfo(taxesapplied.getTax());
@@ -181,29 +201,51 @@ public class TaxesLogic {
         return null;
     }
     
-    public double getTaxRate(String tcid, Date date) {
-        return getTaxRate(tcid, date, null);
+    /**
+     *
+     * @param tcid
+     * @return
+     */
+    public double getTaxRate(String tcid) {
+        return getTaxRate(tcid, null);
     }
     
-    public double getTaxRate(TaxCategoryInfo tc, Date date) {
-        return getTaxRate(tc, date, null);
+    /**
+     *
+     * @param tc
+     * @return
+     */
+    public double getTaxRate(TaxCategoryInfo tc) {
+        return getTaxRate(tc, null);
     }
     
-    public double getTaxRate(TaxCategoryInfo tc, Date date, CustomerInfoExt customer) {
+    /**
+     *
+     * @param tc
+     * @param customer
+     * @return
+     */
+    public double getTaxRate(TaxCategoryInfo tc, CustomerInfoExt customer) {
         
         if (tc == null) {
             return 0.0;
         } else {
-            return getTaxRate(tc.getID(), date, customer);
+            return getTaxRate(tc.getID(), customer);          
         }
     }
     
-    public double getTaxRate(String tcid, Date date, CustomerInfoExt customer) {
+    /**
+     *
+     * @param tcid
+     * @param customer
+     * @return
+     */
+    public double getTaxRate(String tcid, CustomerInfoExt customer) {
         
         if (tcid == null) {
             return 0.0;
         } else {
-            TaxInfo tax = getTaxInfo(tcid, date, customer);
+            TaxInfo tax = getTaxInfo(tcid, customer);
             if (tax == null) {
                 return 0.0;
             } else {
@@ -212,44 +254,60 @@ public class TaxesLogic {
         }
     }
     
-    public TaxInfo getTaxInfo(String tcid, Date date) {
-        return getTaxInfo(tcid, date, null);
+    /**
+     *
+     * @param tcid
+     * @return
+     */
+    public TaxInfo getTaxInfo(String tcid) {
+        return getTaxInfo(tcid, null);
     }
     
-    public TaxInfo getTaxInfo(TaxCategoryInfo tc, Date date) {
-        return getTaxInfo(tc.getID(), date, null);
+    /**
+     *
+     * @param tc
+     * @return
+     */
+    public TaxInfo getTaxInfo(TaxCategoryInfo tc) {
+        return getTaxInfo(tc.getID(), null);
     }
     
-    public TaxInfo getTaxInfo(TaxCategoryInfo tc, Date date, CustomerInfoExt customer) {
-        return getTaxInfo(tc.getID(), date, customer);
-    }    
-    
-    public TaxInfo getTaxInfo(String tcid, Date date, CustomerInfoExt customer) {
+    /**
+     *
+     * @param tc
+     * @param customer
+     * @return
+     */
+    public TaxInfo getTaxInfo(TaxCategoryInfo tc, CustomerInfoExt customer) {  
+        return getTaxInfo(tc.getID(), customer);
+    }
+
+    /**
+     *
+     * @param tcid
+     * @param customer
+     * @return
+     */
+    public TaxInfo getTaxInfo(String tcid, CustomerInfoExt customer) {
         
-        TaxInfo candidatetax = null;
+        
         TaxInfo defaulttax = null;
         
         for (TaxInfo tax : taxlist) {
-            if (tax.getParentID() == null && tax.getTaxCategoryID().equals(tcid) && tax.getValidFrom().compareTo(date) <= 0) {
-
-
-                if (candidatetax == null || tax.getValidFrom().compareTo(candidatetax.getValidFrom()) > 0) {
-                    // is valid date
-                    if ((customer == null || customer.getTaxCustCategoryID() == null) && tax.getTaxCustCategoryID() == null) {
-                        candidatetax = tax;
-                    } else if (customer != null && customer.getTaxCustCategoryID() != null && customer.getTaxCustCategoryID().equals(tax.getTaxCustCategoryID())) {
-                        candidatetax = tax;
-                    }
+            if (tax.getParentID() == null && tax.getTaxCategoryID().equals(tcid)) {
+                if ((customer == null || customer.getTaxCustCategoryID() == null) && tax.getTaxCustCategoryID() == null) {
+                    return tax;
+                } else if (customer != null && customer.getTaxCustCategoryID() != null && customer.getTaxCustCategoryID().equals(tax.getTaxCustCategoryID())) {
+                    return tax;
                 }
                 
                 if (tax.getTaxCustCategoryID() == null) {
-                    if (defaulttax == null || tax.getValidFrom().compareTo(defaulttax.getValidFrom()) > 0) {
-                        defaulttax = tax;
-                    }
+                    defaulttax = tax;
                 }
             }
         }
-
-        return candidatetax == null ? defaulttax : candidatetax;
+        
+        // No tax found
+        return defaulttax;
     }
 }

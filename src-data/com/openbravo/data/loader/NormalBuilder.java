@@ -1,36 +1,49 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.data.loader;
 
 import java.util.*;
 import com.openbravo.basic.BasicException;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class NormalBuilder implements ISQLBuilderStatic {
     
     private String m_sSentence;
     
-    /** Creates a new instance of NormalBuilder */
+    /** Creates a new instance of NormalBuilder
+     * @param sSentence */
     public NormalBuilder(String sSentence) {
         m_sSentence = sSentence;
     }
     
+    /**
+     *
+     * @param sw
+     * @param params
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public String getSQL(SerializerWrite sw, Object params) throws BasicException {
         
         NormalParameter mydw = new NormalParameter(m_sSentence);
@@ -50,25 +63,30 @@ public class NormalBuilder implements ISQLBuilderStatic {
             m_aParams = new ArrayList();
         }
         
+        @Override
         public void setDouble(int paramIndex, Double dValue) throws BasicException {
             ensurePlace(paramIndex - 1);
             m_aParams.set(paramIndex - 1, DataWriteUtils.getSQLValue(dValue));
         }
         
+        @Override
         public void setBoolean(int paramIndex, Boolean bValue) throws BasicException {
             ensurePlace(paramIndex - 1);
             m_aParams.set(paramIndex - 1, DataWriteUtils.getSQLValue(bValue));
         }       
+        @Override
         public void setInt(int paramIndex, Integer iValue) throws BasicException {
             ensurePlace(paramIndex - 1);
             m_aParams.set(paramIndex - 1, DataWriteUtils.getSQLValue(iValue));
         }
         
+        @Override
         public void setString(int paramIndex, String sValue) throws BasicException {
             ensurePlace(paramIndex - 1);
             m_aParams.set(paramIndex - 1, DataWriteUtils.getSQLValue(sValue));
         }
         
+        @Override
         public void setTimestamp(int paramIndex, java.util.Date dValue) throws BasicException {
             ensurePlace(paramIndex - 1);
             m_aParams.set(paramIndex - 1, DataWriteUtils.getSQLValue(dValue));
@@ -76,9 +94,11 @@ public class NormalBuilder implements ISQLBuilderStatic {
 //        public void setBinaryStream(int paramIndex, java.io.InputStream in, int length) throws DataException{
 //            throw new DataException("Param type not allowed");      
 //        }
+        @Override
         public void setBytes(int paramIndex, byte[] value) throws BasicException {
             throw new BasicException(LocalRes.getIntString("exception.noparamtype"));
         }
+        @Override
         public void setObject(int paramIndex, Object value) throws BasicException {
             ensurePlace(paramIndex - 1);
             m_aParams.set(paramIndex - 1, DataWriteUtils.getSQLValue(value));
@@ -93,7 +113,7 @@ public class NormalBuilder implements ISQLBuilderStatic {
         
         public String getSentence() {
             
-            StringBuffer sNewSentence = new StringBuffer();
+            StringBuilder sNewSentence = new StringBuilder();
             int iCount = 0;
             int iPos;
             int iLast = 0;

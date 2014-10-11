@@ -1,30 +1,33 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.editor;
 
+import com.openbravo.basic.BasicException;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.border.Border;
-import com.openbravo.basic.BasicException;
 
-
+/**
+ *
+ * @author JG uniCenta
+ */
 public abstract class JEditorAbstract extends javax.swing.JPanel implements EditorComponent {
 
     private EditorKeys editorkeys;
@@ -43,35 +46,100 @@ public abstract class JEditorAbstract extends javax.swing.JPanel implements Edit
         m_jText.setBorder(m_borderinactive);
     }
 
+    /**
+     *
+     * @return
+     */
     protected abstract int getMode();    
+
+    /**
+     *
+     * @return
+     */
     protected abstract int getAlignment();  
+
+    /**
+     *
+     * @return
+     */
     protected abstract String getEditMode();
+
+    /**
+     *
+     * @return
+     */
     protected abstract String getTextEdit();
+
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
     protected abstract String getTextFormat() throws BasicException;
+
+    /**
+     *
+     * @param c
+     */
     protected abstract void typeCharInternal(char c);    
+
+    /**
+     *
+     * @param c
+     */
     protected abstract void transCharInternal(char c);
     
+    /**
+     *
+     * @param c
+     */
+    @Override
     public void typeChar(char c) {
         typeCharInternal(c);
         reprintText();
         firePropertyChange("Edition", null, null);
     }
     
+    /**
+     *
+     * @param c
+     */
+    @Override
     public void transChar(char c) {
         transCharInternal(c);
         reprintText();
         firePropertyChange("Edition", null, null);
     }
     
+    /**
+     *
+     * @param ed
+     */
+    @Override
     public void addEditorKeys(EditorKeys ed) {
         editorkeys = ed;
     }
+
+    /**
+     *
+     */
+    @Override
     public void deactivate() {
         setActive(false);
     }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public Component getComponent() {
         return this;
     }
+
+    /**
+     *
+     */
     public void activate() {
         if (isEnabled()) {
             editorkeys.setActive(this, getMode());        
@@ -85,6 +153,9 @@ public abstract class JEditorAbstract extends javax.swing.JPanel implements Edit
         reprintText();
     }
             
+    /**
+     *
+     */
     protected void reprintText() {
         
         m_jText.setHorizontalAlignment(getAlignment());
@@ -104,6 +175,7 @@ public abstract class JEditorAbstract extends javax.swing.JPanel implements Edit
         }
     }
     
+    @Override
     public void setEnabled(boolean b) {
         
         if (editorkeys != null) {
@@ -133,6 +205,7 @@ public abstract class JEditorAbstract extends javax.swing.JPanel implements Edit
         panBackground.setLayout(new java.awt.BorderLayout());
 
         m_jText.setBackground(javax.swing.UIManager.getDefaults().getColor("TextField.background"));
+        m_jText.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jText.setContentAreaFilled(false);
         m_jText.setFocusPainted(false);
         m_jText.setFocusable(false);

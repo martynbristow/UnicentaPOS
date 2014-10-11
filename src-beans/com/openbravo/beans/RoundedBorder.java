@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.beans;
 
@@ -23,16 +23,39 @@ import java.awt.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class RoundedBorder extends AbstractBorder {
     
     private static Border blackLine;
     private static Border grayLine;
     private static Border gradientBorder;
     
+    /**
+     *
+     */
     protected Color colorBorder;
+
+    /**
+     *
+     */
     protected Color colorgradient;
+
+    /**
+     *
+     */
     protected int roundedRadius;
+
+    /**
+     *
+     */
     protected float thickness;
+
+    /**
+     *
+     */
     protected boolean filled;
     
     private float ftop;
@@ -40,6 +63,10 @@ public class RoundedBorder extends AbstractBorder {
     private float ftopinset;
     private float fbottominset;
 
+    /**
+     *
+     * @return
+     */
     public static Border createBlackLineBorder() {
         if (blackLine == null) {
             blackLine = new RoundedBorder(Color.BLACK);
@@ -47,6 +74,10 @@ public class RoundedBorder extends AbstractBorder {
         return blackLine;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Border createGrayLineBorder() {
         if (grayLine == null) {
             grayLine = new RoundedBorder(Color.GRAY);
@@ -54,6 +85,10 @@ public class RoundedBorder extends AbstractBorder {
         return grayLine;
     }
     
+    /**
+     *
+     * @return
+     */
     public static Border createGradientBorder() {
         if (gradientBorder == null) {
             gradientBorder = new RoundedBorder(Color.GRAY, 0f, 8, false, false);
@@ -61,21 +96,54 @@ public class RoundedBorder extends AbstractBorder {
         return gradientBorder;
     }
     
+    /**
+     *
+     * @param colorBorder
+     */
     public RoundedBorder(Color colorBorder) {
         this(colorBorder, Color.WHITE, 1f, 0, true, true);
     }
 
+    /**
+     *
+     * @param colorBorder
+     * @param thickness
+     */
     public RoundedBorder(Color colorBorder, float thickness) {
         this(colorBorder, Color.WHITE, thickness, 0, true, true);
     }
 
+    /**
+     *
+     * @param colorBorder
+     * @param thickness
+     * @param roundedRadius
+     */
     public RoundedBorder(Color colorBorder, float thickness, int roundedRadius) {
         this(colorBorder, Color.WHITE, thickness, roundedRadius, true, true);
     }
 
+    /**
+     *
+     * @param colorBorder
+     * @param thickness
+     * @param roundedRadius
+     * @param btopborder
+     * @param bbottomborder
+     */
     public RoundedBorder(Color colorBorder, float thickness, int roundedRadius, boolean btopborder, boolean bbottomborder) {
         this(colorBorder, Color.WHITE, thickness, roundedRadius, btopborder, bbottomborder);
     }
+
+    /**
+     *
+     * @param colorBorder
+     * @param colorgradient
+     * @param thickness
+     * @param roundedRadius
+     * @param btopborder
+     * @param bbottomborder
+     */
     public RoundedBorder(Color colorBorder, Color colorgradient, float thickness, int roundedRadius, boolean btopborder, boolean bbottomborder) {
         
         this.colorBorder = colorBorder;
@@ -169,14 +237,26 @@ public class RoundedBorder extends AbstractBorder {
         return insets;
     }
 
+    /**
+     *
+     * @return
+     */
     public Color getLineColor() {
         return colorBorder;
     }
 
+    /**
+     *
+     * @return
+     */
     public float getThickness() {
         return thickness;
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean isFilled() {
         return filled;
     }

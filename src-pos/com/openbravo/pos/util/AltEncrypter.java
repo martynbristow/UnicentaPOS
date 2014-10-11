@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.util;
 
@@ -23,12 +23,17 @@ import java.io.UnsupportedEncodingException;
 import java.security.*;
 import javax.crypto.*;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class AltEncrypter {
     
     private Cipher cipherDecrypt;
     private Cipher cipherEncrypt;
     
-    /** Creates a new instance of Encrypter */
+    /** Creates a new instance of Encrypter
+     * @param passPhrase */
     public AltEncrypter(String passPhrase) {
         
         try {
@@ -43,29 +48,42 @@ public class AltEncrypter {
             
             cipherDecrypt = Cipher.getInstance("DESEDE/ECB/PKCS5Padding");
             cipherDecrypt.init(Cipher.DECRYPT_MODE, key);
-        } catch (UnsupportedEncodingException e) {
-        } catch (NoSuchPaddingException e) {
-        } catch (NoSuchAlgorithmException e) {
-        } catch (InvalidKeyException e) {
+//        } catch (UnsupportedEncodingException e) {  // JG 1 Oct 13 - use multicatch
+//        } catch (NoSuchPaddingException e) {
+//        } catch (NoSuchAlgorithmException e) {
+//        } catch (InvalidKeyException e) {
+        } catch (UnsupportedEncodingException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException e) {
         }
     }
     
+    /**
+     *
+     * @param str
+     * @return
+     */
     public String encrypt(String str) {
         try {
             return StringUtils.byte2hex(cipherEncrypt.doFinal(str.getBytes("UTF8")));
-        } catch (UnsupportedEncodingException e) {
-        } catch (BadPaddingException e) {
-        } catch (IllegalBlockSizeException e) {
+        } catch (UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
+//        } catch (UnsupportedEncodingException e) { // JG 1 Oct 13 - use multicatch
+//        } catch (BadPaddingException e) {
+//        } catch (IllegalBlockSizeException e) {
         }
         return null;
     }
     
+    /**
+     *
+     * @param str
+     * @return
+     */
     public String decrypt(String str) {
         try {
             return new String(cipherDecrypt.doFinal(StringUtils.hex2byte(str)), "UTF8");
-        } catch (UnsupportedEncodingException e) {
-        } catch (BadPaddingException e) {
-        } catch (IllegalBlockSizeException e) {
+        } catch (UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
+//        } catch (UnsupportedEncodingException e) { // JG 1 Oct 13 - use multicatch
+//        } catch (BadPaddingException e) {
+//        } catch (IllegalBlockSizeException e) {            
         }
         return null;
     }    

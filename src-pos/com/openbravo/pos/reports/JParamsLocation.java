@@ -1,37 +1,33 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.reports;
 
-import com.openbravo.data.loader.SerializerWrite;
+import com.openbravo.basic.BasicException;
+import com.openbravo.data.gui.ComboBoxValModel;
+import com.openbravo.data.loader.*;
+import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
+import com.openbravo.pos.forms.DataLogicSales;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.List;
-import com.openbravo.basic.BasicException;
-import com.openbravo.data.gui.ComboBoxValModel;
-import com.openbravo.data.loader.Datas;
-import com.openbravo.data.loader.QBFCompareEnum;
-import com.openbravo.data.loader.SentenceList;
-import com.openbravo.data.loader.SerializerWriteBasic;
-import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.DataLogicSales;
 
 /**
  *
@@ -47,6 +43,11 @@ public class JParamsLocation extends javax.swing.JPanel implements ReportEditorC
         initComponents();     
     }
 
+    /**
+     *
+     * @param app
+     */
+    @Override
     public void init(AppView app) {
          
         DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
@@ -56,6 +57,11 @@ public class JParamsLocation extends javax.swing.JPanel implements ReportEditorC
         m_LocationsModel = new ComboBoxValModel();   
     }
         
+    /**
+     *
+     * @throws BasicException
+     */
+    @Override
     public void activate() throws BasicException {
         List a = m_sentlocations.list();
         addFirst(a);
@@ -64,27 +70,54 @@ public class JParamsLocation extends javax.swing.JPanel implements ReportEditorC
         m_jLocation.setModel(m_LocationsModel); // refresh model   
     }
     
+    /**
+     *
+     * @return
+     */
+    @Override
     public SerializerWrite getSerializerWrite() {
         return new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING});
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public Component getComponent() {
         return this;
     }
 
-    
+    /**
+     *
+     * @param a
+     */
     protected void addFirst(List a) {
         // do nothing
     }
     
+    /**
+     *
+     * @param l
+     */
     public void addActionListener(ActionListener l) {
         m_jLocation.addActionListener(l);
     }
     
+    /**
+     *
+     * @param l
+     */
     public void removeActionListener(ActionListener l) {
         m_jLocation.removeActionListener(l);
     }
     
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public Object createValue() throws BasicException {
         
         return new Object[] {
@@ -104,7 +137,11 @@ public class JParamsLocation extends javax.swing.JPanel implements ReportEditorC
         jLabel8 = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(AppLocal.getIntString("label.bywarehouse"))); // NOI18N
+        setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
+        m_jLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        jLabel8.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel8.setText(AppLocal.getIntString("label.warehouse")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -122,8 +159,8 @@ public class JParamsLocation extends javax.swing.JPanel implements ReportEditorC
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(m_jLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents

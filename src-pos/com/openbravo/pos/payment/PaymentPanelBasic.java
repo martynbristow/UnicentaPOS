@@ -1,44 +1,60 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.payment;
 
 import com.openbravo.pos.forms.AppLocal;
-import javax.swing.*;
+import javax.swing.JComponent;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class PaymentPanelBasic extends javax.swing.JPanel implements PaymentPanel {
 
     private double m_dTotal;
     private String m_sTransactionID;
     private JPaymentNotifier m_notifier;
     
-    /** Creates new form PaymentPanelSimple */
+    /** Creates new form PaymentPanelSimple
+     * @param notifier */
     public PaymentPanelBasic(JPaymentNotifier notifier) {
         
         m_notifier = notifier;
         initComponents();
     }
     
+    /**
+     *
+     * @return
+     */
+    @Override
     public JComponent getComponent(){
         return this;
     }
     
+    /**
+     *
+     * @param sTransaction
+     * @param dTotal
+     */
+    @Override
     public void activate(String sTransaction, double dTotal) {
         
         m_sTransactionID = sTransaction;
@@ -52,6 +68,11 @@ public class PaymentPanelBasic extends javax.swing.JPanel implements PaymentPane
         m_notifier.setStatus(true, true);            
     }
     
+    /**
+     *
+     * @return
+     */
+    @Override
     public PaymentInfoMagcard getPaymentInfoMagcard() {
 
         if (m_dTotal > 0.0) {

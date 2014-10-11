@@ -1,43 +1,49 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.config;
 
-import java.awt.*;
-import java.awt.event.*;
 import com.openbravo.basic.BasicException;
-import com.openbravo.pos.forms.*;
+import com.openbravo.pos.forms.AppConfig;
+import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.forms.AppProperties;
+import com.openbravo.pos.forms.JRootFrame;
+import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
  * @author adrianromero
  */
 public class JFrmConfig extends javax.swing.JFrame {
+ 
+    private final JPanelConfiguration config;
     
-    private JPanelConfiguration config;
-    
-    /** Creates new form JFrmConfig */
+    /** Creates new form JFrmConfig
+     * @param props */
     public JFrmConfig(AppProperties props) {
-        
+      
         initComponents();
         
         try {
@@ -60,11 +66,13 @@ public class JFrmConfig extends javax.swing.JFrame {
     
     private class MyFrameListener extends WindowAdapter{
         
+        @Override
         public void windowClosing(WindowEvent evt) {
             if (config.deactivate()) {
                 dispose();
             }
         }
+        @Override
         public void windowClosed(WindowEvent evt) {
             System.exit(0);
         }
@@ -78,9 +86,11 @@ public class JFrmConfig extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(700, 450));
+        setPreferredSize(new java.awt.Dimension(750, 450));
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-731)/2, (screenSize.height-679)/2, 731, 679);
+        setSize(new java.awt.Dimension(758, 561));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
     /**
@@ -88,15 +98,17 @@ public class JFrmConfig extends javax.swing.JFrame {
      */
     public static void main(final String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 
                 AppConfig config = new AppConfig(args);
                 config.load();    
                 
-                // Set the look and feel.
+// Set the look and feel.
+// JG 6 May 2013 to Multicatch                
                 try {                    
                     UIManager.setLookAndFeel(config.getProperty("swing.defaultlaf"));
-                } catch (Exception e) {
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
                 }
                 
                 new JFrmConfig(config).setVisible(true);

@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.reports;
 
@@ -33,7 +33,7 @@ import java.awt.Component;
  *
  * @author  adrianromero
  */
-public class JParamsText extends javax.swing.JPanel implements ReportEditorCreator {
+public final class JParamsText extends javax.swing.JPanel implements ReportEditorCreator {
     
     private Datas datasvalue;
     private Formats formatsvalue;
@@ -47,6 +47,10 @@ public class JParamsText extends javax.swing.JPanel implements ReportEditorCreat
         setType(Formats.STRING);
     }
     
+    /**
+     *
+     * @param label
+     */
     public JParamsText(String label) {
         
         initComponents();
@@ -55,6 +59,11 @@ public class JParamsText extends javax.swing.JPanel implements ReportEditorCreat
         setType(Formats.STRING);
     }
     
+    /**
+     *
+     * @param label
+     * @param format
+     */
     public JParamsText(String label, Formats format) {
         
         initComponents();
@@ -63,6 +72,12 @@ public class JParamsText extends javax.swing.JPanel implements ReportEditorCreat
         setType(format);
     }
     
+    /**
+     *
+     * @param label
+     * @param format
+     * @param data
+     */
     public JParamsText(String label, Formats format, Datas data) {
         
         initComponents();
@@ -71,16 +86,29 @@ public class JParamsText extends javax.swing.JPanel implements ReportEditorCreat
         setType(format, data);
     }
     
+    /**
+     *
+     * @param label
+     */
     public void setLabel(String label) {
         lblField.setText(label);
     }
     
+    /**
+     *
+     * @param format
+     * @param data
+     */
     public void setType(Formats format, Datas data) {
         formatsvalue = format;
         datasvalue = data;
         setDefaultCompare();
     }
     
+    /**
+     *
+     * @param format
+     */
     public void setType(Formats format) {
         
         if (Formats.INT == format) {
@@ -96,6 +124,10 @@ public class JParamsText extends javax.swing.JPanel implements ReportEditorCreat
         }
     }
     
+    /**
+     *
+     * @param compare
+     */
     public void setCompare(QBFCompareEnum compare) {
         comparevalue = compare;
     }
@@ -114,21 +146,47 @@ public class JParamsText extends javax.swing.JPanel implements ReportEditorCreat
         }
     }
     
+    /**
+     *
+     * @param app
+     */
+    @Override
     public void init(AppView app) {
     }
 
+    /**
+     *
+     * @throws BasicException
+     */
+    @Override
     public void activate() throws BasicException {
         txtField.setText(null);
     }
     
+    /**
+     *
+     * @return
+     */
+    @Override
     public SerializerWrite getSerializerWrite() {
         return new SerializerWriteBasic(new Datas[] {Datas.OBJECT, datasvalue});
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public Component getComponent() {
         return this;
     }
     
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public Object createValue() throws BasicException {
         
         Object value = formatsvalue.parseValue(txtField.getText());
@@ -155,11 +213,14 @@ public class JParamsText extends javax.swing.JPanel implements ReportEditorCreat
         setPreferredSize(new java.awt.Dimension(0, 30));
         setLayout(null);
 
+        lblField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         lblField.setText("***");
         add(lblField);
-        lblField.setBounds(20, 10, 120, 14);
+        lblField.setBounds(20, 10, 120, 25);
+
+        txtField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         add(txtField);
-        txtField.setBounds(140, 10, 200, 18);
+        txtField.setBounds(140, 10, 200, 25);
     }// </editor-fold>//GEN-END:initComponents
     
     

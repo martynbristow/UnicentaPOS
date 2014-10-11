@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.sales.restaurant;
 
@@ -31,8 +31,15 @@ import java.awt.Insets;
 import java.io.Serializable;
 import com.openbravo.format.Formats;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class JCalendarItemRenderer extends javax.swing.JPanel implements ListCellRenderer, Serializable {
 
+    /**
+     *
+     */
     protected static Border noFocusBorder;
     
     private boolean m_bDone = false;
@@ -132,6 +139,7 @@ public class JCalendarItemRenderer extends javax.swing.JPanel implements ListCel
 
         setLayout(new java.awt.BorderLayout());
 
+        m_jDescription.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jDescription.setText("<html>This is a test comment that shows how a long line is printed with this renderer.");
         m_jDescription.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         m_jDescription.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 20, 5, 20));
@@ -140,10 +148,12 @@ public class JCalendarItemRenderer extends javax.swing.JPanel implements ListCel
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
+        m_jTime.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jTime.setForeground(new java.awt.Color(0, 0, 255));
         m_jTime.setText("10:20");
         jPanel1.add(m_jTime, java.awt.BorderLayout.WEST);
 
+        m_jTitle.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jTitle.setText(" This is a test");
         m_jTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
         jPanel1.add(m_jTitle, java.awt.BorderLayout.CENTER);

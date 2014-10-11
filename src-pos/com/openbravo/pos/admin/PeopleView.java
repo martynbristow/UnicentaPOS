@@ -1,36 +1,36 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.admin;
 
-import java.awt.Component;
-import javax.swing.*;
-import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.util.Hashcypher;
-import java.awt.image.BufferedImage;
-import java.util.UUID;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ComboBoxValModel;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.*;
 import com.openbravo.format.Formats;
+import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.util.Hashcypher;
 import com.openbravo.pos.util.StringUtils;
+import java.awt.Component;
+import java.awt.image.BufferedImage;
+import java.util.UUID;
+import javax.swing.*;
 
 /**
  *
@@ -41,12 +41,14 @@ public class PeopleView extends JPanel implements EditorRecord {
     private Object m_oId;
     private String m_sPassword;
     
-    private DirtyManager m_Dirty;
+    private final DirtyManager m_Dirty;
     
-    private SentenceList m_sentrole;
+    private final SentenceList m_sentrole;
     private ComboBoxValModel m_RoleModel;  
     
-    /** Creates new form PeopleEditor */
+    /** Creates new form PeopleEditor
+     * @param dlAdmin
+     * @param dirty */
     public PeopleView(DataLogicAdmin dlAdmin, DirtyManager dirty) {
         initComponents();
                 
@@ -64,6 +66,10 @@ public class PeopleView extends JPanel implements EditorRecord {
         writeValueEOF();
     }
 
+    /**
+     *
+     */
+    @Override
     public void writeValueEOF() {
         m_oId = null;
         m_jName.setText(null);
@@ -82,6 +88,10 @@ public class PeopleView extends JPanel implements EditorRecord {
         jButton3.setEnabled(false);
     }
     
+    /**
+     *
+     */
+    @Override
     public void writeValueInsert() {
         m_oId = null;
         m_jName.setText(null);
@@ -100,6 +110,11 @@ public class PeopleView extends JPanel implements EditorRecord {
         jButton3.setEnabled(true);
     }
     
+    /**
+     *
+     * @param value
+     */
+    @Override
     public void writeValueDelete(Object value) {
         Object[] people = (Object[]) value;
         m_oId = people[0];
@@ -109,6 +124,7 @@ public class PeopleView extends JPanel implements EditorRecord {
         m_jVisible.setSelected(((Boolean) people[4]).booleanValue());
         jcard.setText(Formats.STRING.formatValue(people[5]));
         m_jImage.setImage((BufferedImage) people[6]);
+        
         m_jName.setEnabled(false);
         m_jRole.setEnabled(false);
         m_jVisible.setEnabled(false);
@@ -117,8 +133,13 @@ public class PeopleView extends JPanel implements EditorRecord {
         jButton1.setEnabled(false);
         jButton2.setEnabled(false);
         jButton3.setEnabled(false);
-    }    
-    
+    }
+
+    /**
+     *
+     * @param value
+     */
+    @Override
     public void writeValueEdit(Object value) {
         Object[] people = (Object[]) value;
         m_oId = people[0];
@@ -128,6 +149,7 @@ public class PeopleView extends JPanel implements EditorRecord {
         m_jVisible.setSelected(((Boolean) people[4]).booleanValue());
         jcard.setText(Formats.STRING.formatValue(people[5]));
         m_jImage.setImage((BufferedImage) people[6]);
+        
         m_jName.setEnabled(true);
         m_jRole.setEnabled(true);
         m_jVisible.setEnabled(true);
@@ -138,6 +160,12 @@ public class PeopleView extends JPanel implements EditorRecord {
         jButton3.setEnabled(true);
     }
     
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public Object createValue() throws BasicException {
         Object[] people = new Object[7];
         people[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
@@ -148,18 +176,31 @@ public class PeopleView extends JPanel implements EditorRecord {
         people[5] = Formats.STRING.parseValue(jcard.getText());
         people[6] = m_jImage.getImage();
         return people;
-    }    
-    
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public Component getComponent() {
         return this;
-    }    
-    
+    }
+
+    /**
+     *
+     * @throws BasicException
+     */
     public void activate() throws BasicException {
         
         m_RoleModel = new ComboBoxValModel(m_sentrole.list());
         m_jRole.setModel(m_RoleModel);
     }
     
+    /**
+     *
+     */
+    @Override
     public void refresh() {
     }
      
@@ -185,39 +226,58 @@ public class PeopleView extends JPanel implements EditorRecord {
         jButton2 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
+        setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        setPreferredSize(new java.awt.Dimension(531, 400));
+
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileclose.png"))); // NOI18N
+        jButton3.setToolTipText("Clear Key");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel1.setText(AppLocal.getIntString("label.peoplename")); // NOI18N
 
+        m_jName.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+
+        m_jVisible.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel3.setText(AppLocal.getIntString("label.peoplevisible")); // NOI18N
 
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel4.setText(AppLocal.getIntString("label.peopleimage")); // NOI18N
 
-        m_jImage.setMaxDimensions(new java.awt.Dimension(32, 32));
+        m_jImage.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
+        jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jButton1.setText(AppLocal.getIntString("button.peoplepassword")); // NOI18N
+        jButton1.setPreferredSize(new java.awt.Dimension(79, 32));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
+        m_jRole.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel2.setText(AppLocal.getIntString("label.role")); // NOI18N
 
         jcard.setEditable(false);
+        jcard.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/color_line16.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/encrypted.png"))); // NOI18N
+        jButton2.setToolTipText("Create Key");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel5.setText(AppLocal.getIntString("label.card")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -228,64 +288,65 @@ public class PeopleView extends JPanel implements EditorRecord {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(m_jVisible))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jcard, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(m_jRole, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(m_jImage, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(m_jRole, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jcard, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(m_jImage, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(m_jVisible))))
-                .addContainerGap(129, Short.MAX_VALUE))
+                        .addComponent(jButton3)))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(jcard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(m_jRole, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jButton2))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcard, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jRole, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(m_jVisible))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jVisible, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(m_jImage, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jImage, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(246, 246, 246))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -303,7 +364,8 @@ public class PeopleView extends JPanel implements EditorRecord {
         
         
         if (JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.cardnew"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {  
-            jcard.setText("c" + StringUtils.getCardNumber());
+// JG 8 Jan 14 - Change "c" case to upper "C"        jcard.setText("c" + StringUtils.getCardNumber());
+            jcard.setText("C" + StringUtils.getCardNumber());
             m_Dirty.setDirty(true);
         }
         

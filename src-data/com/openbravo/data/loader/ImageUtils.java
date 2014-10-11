@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.data.loader;
 
@@ -27,6 +27,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class ImageUtils {
     
     private static char[] HEXCHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -49,6 +53,11 @@ public class ImageUtils {
         return resource;       
     }
     
+    /**
+     *
+     * @param file
+     * @return
+     */
     public static byte[] getBytesFromResource(String file) {
         
         InputStream in = ImageUtils.class.getResourceAsStream(file);
@@ -69,10 +78,20 @@ public class ImageUtils {
         }
     }
     
+    /**
+     *
+     * @param file
+     * @return
+     */
     public static BufferedImage readImageFromResource(String file) {
         return readImage(getBytesFromResource(file));
     }
     
+    /**
+     *
+     * @param url
+     * @return
+     */
     public static BufferedImage readImage(String url) {
         try {
             return readImage(new URL(url));
@@ -81,6 +100,11 @@ public class ImageUtils {
         }
     }
     
+    /**
+     *
+     * @param url
+     * @return
+     */
     public static BufferedImage readImage(URL url) {
         
         InputStream in = null;
@@ -101,6 +125,11 @@ public class ImageUtils {
         }
     }
     
+    /**
+     *
+     * @param b
+     * @return
+     */
     public static BufferedImage readImage(byte[] b) {
         if (b == null) {
             return null;
@@ -113,6 +142,11 @@ public class ImageUtils {
         }
     }
     
+    /**
+     *
+     * @param img
+     * @return
+     */
     public static byte[] writeImage(BufferedImage img) {
         if (img == null) {
             return null;
@@ -129,6 +163,11 @@ public class ImageUtils {
         }
     }
     
+    /**
+     *
+     * @param b
+     * @return
+     */
     public static Object readSerializable(byte[] b) {
         if (b == null) {
             return null;
@@ -148,6 +187,11 @@ public class ImageUtils {
         }
     }
     
+    /**
+     *
+     * @param o
+     * @return
+     */
     public static byte[] writeSerializable(Object o) {
         
         if (o == null) {
@@ -167,6 +211,11 @@ public class ImageUtils {
         }
     }
 
+    /**
+     *
+     * @param b
+     * @return
+     */
     public static Properties readProperties(byte b[]) {
         Properties prop = new Properties();
         try {
@@ -178,9 +227,14 @@ public class ImageUtils {
         return prop;
     }
        
+    /**
+     *
+     * @param binput
+     * @return
+     */
     public static String bytes2hex(byte[] binput) {
         
-        StringBuffer s = new StringBuffer(binput.length *2);
+        StringBuilder s = new StringBuilder(binput.length *2);
         for (int i = 0; i < binput.length; i++) {
             byte b = binput[i];
             s.append(HEXCHARS[(b & 0xF0) >> 4]);

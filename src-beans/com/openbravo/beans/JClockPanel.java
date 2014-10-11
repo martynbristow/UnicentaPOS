@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.beans;
 
@@ -30,6 +30,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class JClockPanel extends javax.swing.JPanel {
     
     private static Calendar m_calendar = new GregorianCalendar(); // solo de ayuda...
@@ -43,6 +47,10 @@ public class JClockPanel extends javax.swing.JPanel {
         this(true);
     }
     
+    /**
+     *
+     * @param bSeconds
+     */
     public JClockPanel(boolean bSeconds) {
         
         initComponents();
@@ -52,32 +60,60 @@ public class JClockPanel extends javax.swing.JPanel {
         m_lPeriod = 0L;
     }
     
+    /**
+     *
+     * @param bValue
+     */
     public void setSecondsVisible(boolean bValue) {
         m_bSeconds = bValue;
         repaint();
     }
+
+    /**
+     *
+     * @return
+     */
     public boolean isSecondsVisible() {
         return m_bSeconds;
     }
+
+    /**
+     *
+     * @param period
+     */
     public void setPeriod(long period) {
         if (period >= 0L) {
             m_lPeriod = period;
             repaint();
         }
     }
+
+    /**
+     *
+     * @return
+     */
     public long getPeriod() {
         return m_lPeriod;
     }
     
+    /**
+     *
+     * @param dDate
+     */
     public void setTime(Date dDate){
         m_date = dDate;
         repaint();
     }
     
+    /**
+     *
+     * @return
+     */
     public Date getTime() {
         return m_date;
     }
     
+    @Override
     public void paintComponent(Graphics g) {
         
         super.paintComponent(g);
@@ -203,11 +239,11 @@ public class JClockPanel extends javax.swing.JPanel {
         g2.setPaint(oldPainter);
     }   
     
-    // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-    }
-    // </editor-fold>//GEN-END:initComponents
+        setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+    }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

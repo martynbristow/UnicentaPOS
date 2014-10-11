@@ -1,28 +1,30 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.catalog;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import com.openbravo.beans.JFlowPanel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 
 /**
  *
@@ -45,17 +47,28 @@ public class JCatalogTab extends javax.swing.JPanel {
         add(scroll, BorderLayout.CENTER);
     }
     
+    @Override
     public void setEnabled(boolean value) {
         flowpanel.setEnabled(value);
         super.setEnabled(value);
     }
-    
-    public void addButton(Icon ico, ActionListener al) {
+// ADDED JDL 09.04.13 TEXTTIP FUNCTION
+
+    /**
+     *
+     * @param ico
+     * @param al
+     * @param textTip
+     */
+        public void addButton(Icon ico, ActionListener al, String textTip) {
         JButton btn = new JButton();
         btn.applyComponentOrientation(getComponentOrientation());
         btn.setIcon(ico);
         btn.setFocusPainted(false);
         btn.setFocusable(false);
+        if (textTip != null){
+        btn.setToolTipText(textTip);
+        }
         btn.setRequestFocusEnabled(false);
         btn.setHorizontalTextPosition(SwingConstants.CENTER);
         btn.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -72,6 +85,7 @@ public class JCatalogTab extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
     

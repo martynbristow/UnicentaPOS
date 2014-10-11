@@ -1,27 +1,26 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
-
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 package com.openbravo.pos.payment;
 
 import com.openbravo.format.Formats;
-import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.customers.CustomerInfoExt;
+import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.util.RoundUtils;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
@@ -32,73 +31,92 @@ import java.beans.PropertyChangeListener;
  * @author  adrianromero
  */
 public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterface {
-    
+
     private JPaymentNotifier notifier;
     private CustomerInfoExt customerext;
-    
     private double m_dPaid;
     private double m_dTotal;
 
-    /** Creates new form JPaymentDebt */
+    /** Creates new form JPaymentDebt
+     * @param notifier */
     public JPaymentDebt(JPaymentNotifier notifier) {
-        
+
         this.notifier = notifier;
-        
-        initComponents();  
-        
+
+        initComponents();
+
         m_jTendered.addPropertyChangeListener("Edition", new RecalculateState());
         m_jTendered.addEditorKeys(m_jKeys);
-        
+
     }
-    
+
+    /**
+     *
+     * @param customerext
+     * @param dTotal
+     * @param transID
+     */
+    @Override
     public void activate(CustomerInfoExt customerext, double dTotal, String transID) {
-        
+
         this.customerext = customerext;
         m_dTotal = dTotal;
-        
+
         m_jTendered.reset();
-        
+
         // 
         if (customerext == null) {
             m_jName.setText(null);
             m_jNotes.setText(null);
             txtMaxdebt.setText(null);
-            txtCurdate.setText(null);        
+            txtCurdate.setText(null);
             txtCurdebt.setText(null);
-            
+
             m_jKeys.setEnabled(false);
             m_jTendered.setEnabled(false);
-            
-            
-        } else {            
+
+
+        } else {
             m_jName.setText(customerext.getName());
             m_jNotes.setText(customerext.getNotes());
             txtMaxdebt.setText(Formats.CURRENCY.formatValue(RoundUtils.getValue(customerext.getMaxdebt())));
-            txtCurdate.setText(Formats.DATE.formatValue(customerext.getCurdate()));        
-            txtCurdebt.setText(Formats.CURRENCY.formatValue(RoundUtils.getValue(customerext.getCurdebt())));   
-                
-            if (RoundUtils.compare(RoundUtils.getValue(customerext.getCurdebt()), RoundUtils.getValue(customerext.getMaxdebt())) >= 0)  {
+            txtCurdate.setText(Formats.DATE.formatValue(customerext.getCurdate()));
+            txtCurdebt.setText(Formats.CURRENCY.formatValue(RoundUtils.getValue(customerext.getCurdebt())));
+
+            if (RoundUtils.compare(RoundUtils.getValue(customerext.getCurdebt()), RoundUtils.getValue(customerext.getMaxdebt())) >= 0) {
                 m_jKeys.setEnabled(false);
-                m_jTendered.setEnabled(false);                
-            } else {    
+                m_jTendered.setEnabled(false);
+            } else {
                 m_jKeys.setEnabled(true);
                 m_jTendered.setEnabled(true);
-                m_jTendered.activate();  
+                m_jTendered.activate();
             }
-        }        
-        
+        }
+
         printState();
-        
+
     }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public PaymentInfo executePayment() {
-        return new PaymentInfoTicket(m_dPaid, "debt");      
+        return new PaymentInfoTicket(m_dPaid, "debt");
     }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public Component getComponent() {
         return this;
     }
 
     private void printState() {
-        
+
         if (customerext == null) {
             m_jMoneyEuros.setText(null);
             jlblMessage.setText(AppLocal.getIntString("message.nocustomernodebt"));
@@ -109,12 +127,12 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
                 m_dPaid = m_dTotal;
             } else {
                 m_dPaid = value;
-            } 
+            }
 
             m_jMoneyEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dPaid)));
-            
-            
-            if (RoundUtils.compare(RoundUtils.getValue(customerext.getCurdebt()) + m_dPaid, RoundUtils.getValue(customerext.getMaxdebt())) >= 0)  { 
+
+
+            if (RoundUtils.compare(RoundUtils.getValue(customerext.getCurdebt()) + m_dPaid, RoundUtils.getValue(customerext.getMaxdebt())) >= 0) {
                 // maximum debt exceded
                 jlblMessage.setText(AppLocal.getIntString("message.customerdebtexceded"));
                 notifier.setStatus(false, false);
@@ -124,15 +142,17 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
                 // if iCompare > 0 then the payment is not valid
                 notifier.setStatus(m_dPaid > 0.0 && iCompare <= 0, iCompare == 0);
             }
-        }        
+        }
     }
-    
+
     private class RecalculateState implements PropertyChangeListener {
+
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
             printState();
         }
-    }     
-    
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -170,69 +190,85 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
 
         jPanel4.setLayout(null);
 
+        jLabel8.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel8.setText(AppLocal.getIntString("label.debt")); // NOI18N
         jPanel4.add(jLabel8);
-        jLabel8.setBounds(20, 20, 100, 15);
+        jLabel8.setBounds(20, 20, 100, 25);
 
-        m_jMoneyEuros.setBackground(new java.awt.Color(153, 153, 255));
+        m_jMoneyEuros.setBackground(new java.awt.Color(204, 255, 51));
+        m_jMoneyEuros.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         m_jMoneyEuros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         m_jMoneyEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jMoneyEuros.setOpaque(true);
-        m_jMoneyEuros.setPreferredSize(new java.awt.Dimension(150, 25));
+        m_jMoneyEuros.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel4.add(m_jMoneyEuros);
-        m_jMoneyEuros.setBounds(120, 20, 150, 25);
+        m_jMoneyEuros.setBounds(120, 20, 200, 30);
 
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel3.setText(AppLocal.getIntString("label.name")); // NOI18N
         jPanel4.add(jLabel3);
-        jLabel3.setBounds(20, 70, 100, 15);
+        jLabel3.setBounds(20, 60, 100, 25);
 
         m_jName.setEditable(false);
+        m_jName.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanel4.add(m_jName);
-        m_jName.setBounds(120, 70, 200, 19);
+        m_jName.setBounds(120, 60, 200, 25);
 
+        jLabel12.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel12.setText(AppLocal.getIntString("label.notes")); // NOI18N
         jPanel4.add(jLabel12);
-        jLabel12.setBounds(20, 100, 100, 15);
+        jLabel12.setBounds(20, 90, 100, 25);
 
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel2.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
         jPanel4.add(jLabel2);
-        jLabel2.setBounds(20, 180, 100, 15);
+        jLabel2.setBounds(20, 150, 100, 25);
 
         txtMaxdebt.setEditable(false);
+        txtMaxdebt.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtMaxdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel4.add(txtMaxdebt);
-        txtMaxdebt.setBounds(120, 180, 130, 19);
+        txtMaxdebt.setBounds(120, 150, 130, 25);
 
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel4.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
         jPanel4.add(jLabel4);
-        jLabel4.setBounds(20, 210, 100, 15);
+        jLabel4.setBounds(20, 180, 100, 25);
 
         txtCurdebt.setEditable(false);
+        txtCurdebt.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtCurdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel4.add(txtCurdebt);
-        txtCurdebt.setBounds(120, 210, 130, 19);
+        txtCurdebt.setBounds(120, 180, 130, 25);
 
+        jLabel6.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel6.setText(AppLocal.getIntString("label.curdate")); // NOI18N
         jPanel4.add(jLabel6);
-        jLabel6.setBounds(20, 240, 100, 15);
+        jLabel6.setBounds(20, 210, 100, 25);
 
         txtCurdate.setEditable(false);
+        txtCurdate.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jPanel4.add(txtCurdate);
-        txtCurdate.setBounds(120, 240, 130, 19);
+        txtCurdate.setBounds(120, 210, 130, 25);
 
         m_jNotes.setEditable(false);
+        m_jNotes.setBackground(new java.awt.Color(240, 240, 240));
+        m_jNotes.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        m_jNotes.setEnabled(false);
         jScrollPane1.setViewportView(m_jNotes);
 
         jPanel4.add(jScrollPane1);
-        jScrollPane1.setBounds(120, 100, 200, 70);
+        jScrollPane1.setBounds(120, 90, 200, 50);
 
         jPanel5.add(jPanel4, java.awt.BorderLayout.CENTER);
 
-        jlblMessage.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
         jlblMessage.setEditable(false);
+        jlblMessage.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jlblMessage.setForeground(new java.awt.Color(255, 0, 51));
         jlblMessage.setLineWrap(true);
         jlblMessage.setWrapStyleWord(true);
+        jlblMessage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jlblMessage.setFocusable(false);
         jlblMessage.setPreferredSize(new java.awt.Dimension(300, 72));
         jlblMessage.setRequestFocusEnabled(false);
@@ -245,10 +281,18 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+
+        m_jKeys.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jKeysActionPerformed(evt);
+            }
+        });
         jPanel1.add(m_jKeys);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jPanel3.setLayout(new java.awt.BorderLayout());
+
+        m_jTendered.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel3.add(m_jTendered, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel3);
@@ -257,8 +301,11 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
 
         add(jPanel2, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+    private void m_jKeysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jKeysActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_m_jKeysActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -283,5 +330,4 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
     private javax.swing.JTextField txtCurdebt;
     private javax.swing.JTextField txtMaxdebt;
     // End of variables declaration//GEN-END:variables
-    
 }

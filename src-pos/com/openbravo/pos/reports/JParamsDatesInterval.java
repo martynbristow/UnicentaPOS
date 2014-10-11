@@ -1,36 +1,40 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.reports;
 
+import com.openbravo.basic.BasicException;
+import com.openbravo.beans.JCalendarDialog;
+import com.openbravo.data.loader.Datas;
+import com.openbravo.data.loader.QBFCompareEnum;
+import com.openbravo.data.loader.SerializerWrite;
+import com.openbravo.data.loader.SerializerWriteBasic;
+import com.openbravo.format.Formats;
+import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
 import java.awt.Component;
 import java.util.Date;
-import com.openbravo.beans.JCalendarDialog;
-import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.data.loader.QBFCompareEnum;
-import com.openbravo.format.Formats;
-import com.openbravo.basic.BasicException;
-import com.openbravo.data.loader.Datas;
-import com.openbravo.data.loader.SerializerWrite;
-import com.openbravo.data.loader.SerializerWriteBasic;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEditorCreator {
 
     /** Creates new form JParamsClosedPos */
@@ -38,31 +42,66 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
         initComponents();
     }
     
+    /**
+     *
+     * @param d
+     */
     public void setStartDate(Date d) {
         jTxtStartDate.setText(Formats.TIMESTAMP.formatValue(d));
     }
     
+    /**
+     *
+     * @param d
+     */
     public void setEndDate(Date d) {
         jTxtEndDate.setText(Formats.TIMESTAMP.formatValue(d));
     }
 
+    /**
+     *
+     * @param app
+     */
+    @Override
     public void init(AppView app) {
     }
 
+    /**
+     *
+     * @throws BasicException
+     */
+    @Override
     public void activate() throws BasicException {
     }
     
+    /**
+     *
+     * @return
+     */
+    @Override
     public SerializerWrite getSerializerWrite() {
         return new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.TIMESTAMP, Datas.OBJECT, Datas.TIMESTAMP});
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public Component getComponent() {
         return this;
     }
     
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public Object createValue() throws BasicException {
         Object startdate = Formats.TIMESTAMP.parseValue(jTxtStartDate.getText());
-        Object enddate = Formats.TIMESTAMP.parseValue(jTxtEndDate.getText());   
+        Object enddate = Formats.TIMESTAMP.parseValue(jTxtEndDate.getText());  
+
         return new Object[] {
             startdate == null ? QBFCompareEnum.COMP_NONE : QBFCompareEnum.COMP_GREATEROREQUALS,
             startdate,
@@ -90,35 +129,49 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
         setPreferredSize(new java.awt.Dimension(0, 100));
         setLayout(null);
 
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel1.setText(AppLocal.getIntString("Label.StartDate")); // NOI18N
         add(jLabel1);
-        jLabel1.setBounds(20, 20, 120, 15);
-        add(jTxtStartDate);
-        jTxtStartDate.setBounds(140, 20, 200, 19);
+        jLabel1.setBounds(20, 20, 80, 25);
 
+        jTxtStartDate.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        add(jTxtStartDate);
+        jTxtStartDate.setBounds(100, 20, 130, 25);
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel2.setText(AppLocal.getIntString("Label.EndDate")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(20, 50, 120, 15);
+        jLabel2.setBounds(300, 20, 80, 25);
+
+        jTxtEndDate.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         add(jTxtEndDate);
-        jTxtEndDate.setBounds(140, 50, 200, 19);
+        jTxtEndDate.setBounds(380, 20, 140, 25);
 
         btnDateStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/date.png"))); // NOI18N
+        btnDateStart.setToolTipText("Open Calendar");
+        btnDateStart.setMaximumSize(new java.awt.Dimension(40, 33));
+        btnDateStart.setMinimumSize(new java.awt.Dimension(40, 33));
+        btnDateStart.setPreferredSize(new java.awt.Dimension(40, 33));
         btnDateStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDateStartActionPerformed(evt);
             }
         });
         add(btnDateStart);
-        btnDateStart.setBounds(350, 20, 50, 26);
+        btnDateStart.setBounds(240, 20, 40, 33);
 
         btnDateEnd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/date.png"))); // NOI18N
+        btnDateEnd.setToolTipText("Open Calendar");
+        btnDateEnd.setMaximumSize(new java.awt.Dimension(40, 33));
+        btnDateEnd.setMinimumSize(new java.awt.Dimension(40, 33));
+        btnDateEnd.setPreferredSize(new java.awt.Dimension(40, 33));
         btnDateEnd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDateEndActionPerformed(evt);
             }
         });
         add(btnDateEnd);
-        btnDateEnd.setBounds(350, 50, 50, 26);
+        btnDateEnd.setBounds(530, 20, 40, 33);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDateStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateStartActionPerformed

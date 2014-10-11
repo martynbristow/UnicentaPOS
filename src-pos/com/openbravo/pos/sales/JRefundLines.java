@@ -1,30 +1,34 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.sales;
 
-import java.awt.BorderLayout;
-import java.util.List;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.ticket.TicketLineInfo;
+import java.awt.BorderLayout;
+import java.util.List;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class JRefundLines extends javax.swing.JPanel {
     
     private JTicketLines ticketlines;
@@ -32,7 +36,9 @@ public class JRefundLines extends javax.swing.JPanel {
 
     private JPanelTicketEdits m_jTicketEdit;
     
-    /** Creates new form JRefundLines */
+    /** Creates new form JRefundLines
+     * @param dlSystem
+     * @param jTicketEdit */
 public JRefundLines(DataLogicSystem dlSystem, JPanelTicketEdits jTicketEdit) {
         
         m_jTicketEdit = jTicketEdit;
@@ -44,6 +50,10 @@ public JRefundLines(DataLogicSystem dlSystem, JPanelTicketEdits jTicketEdit) {
         jPanel3.add(ticketlines, BorderLayout.CENTER);
     }
     
+    /**
+     *
+     * @param aRefundLines
+     */
     public void setLines(List aRefundLines) {
         
         m_aLines = aRefundLines;
@@ -71,6 +81,7 @@ public JRefundLines(DataLogicSystem dlSystem, JPanelTicketEdits jTicketEdit) {
         m_jbtnAddLine = new javax.swing.JButton();
         m_jbtnAddAll = new javax.swing.JButton();
 
+        setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         setPreferredSize(new java.awt.Dimension(15, 200));
         setLayout(new java.awt.BorderLayout());
 
@@ -81,10 +92,13 @@ public JRefundLines(DataLogicSystem dlSystem, JPanelTicketEdits jTicketEdit) {
 
         jPanel2.setLayout(new java.awt.GridLayout(0, 1, 0, 5));
 
+        m_jbtnAddOne.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jbtnAddOne.setText(AppLocal.getIntString("button.refundone")); // NOI18N
+        m_jbtnAddOne.setToolTipText("Refund An Item");
         m_jbtnAddOne.setFocusPainted(false);
         m_jbtnAddOne.setFocusable(false);
         m_jbtnAddOne.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jbtnAddOne.setPreferredSize(new java.awt.Dimension(100, 33));
         m_jbtnAddOne.setRequestFocusEnabled(false);
         m_jbtnAddOne.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -93,10 +107,13 @@ public JRefundLines(DataLogicSystem dlSystem, JPanelTicketEdits jTicketEdit) {
         });
         jPanel2.add(m_jbtnAddOne);
 
+        m_jbtnAddLine.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jbtnAddLine.setText(AppLocal.getIntString("button.refundline")); // NOI18N
+        m_jbtnAddLine.setToolTipText("Refund A Line");
         m_jbtnAddLine.setFocusPainted(false);
         m_jbtnAddLine.setFocusable(false);
         m_jbtnAddLine.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jbtnAddLine.setPreferredSize(new java.awt.Dimension(100, 33));
         m_jbtnAddLine.setRequestFocusEnabled(false);
         m_jbtnAddLine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,10 +122,13 @@ public JRefundLines(DataLogicSystem dlSystem, JPanelTicketEdits jTicketEdit) {
         });
         jPanel2.add(m_jbtnAddLine);
 
+        m_jbtnAddAll.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jbtnAddAll.setText(AppLocal.getIntString("button.refundall")); // NOI18N
+        m_jbtnAddAll.setToolTipText("Refund Everything");
         m_jbtnAddAll.setFocusPainted(false);
         m_jbtnAddAll.setFocusable(false);
         m_jbtnAddAll.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jbtnAddAll.setPreferredSize(new java.awt.Dimension(100, 33));
         m_jbtnAddAll.setRequestFocusEnabled(false);
         m_jbtnAddAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2008-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.inventory;
 
@@ -38,7 +38,8 @@ public class AttributeValuesEditor extends javax.swing.JPanel implements EditorR
 
     private Object insertid;
 
-    /** Creates new form AttributesValuesEditor */
+    /** Creates new form AttributesValuesEditor
+     * @param dirty */
     public AttributeValuesEditor(DirtyManager dirty) {
         
         initComponents();
@@ -46,14 +47,26 @@ public class AttributeValuesEditor extends javax.swing.JPanel implements EditorR
         jValue.getDocument().addDocumentListener(dirty);
     }
 
+    /**
+     *
+     * @param insertid
+     */
     public void setInsertId(String insertid) {
 
         this.insertid = insertid;
     }
 
+    /**
+     *
+     */
+    @Override
     public void refresh() {
     }
 
+    /**
+     *
+     */
+    @Override
     public void writeValueEOF() {
 
         id = null;
@@ -63,6 +76,10 @@ public class AttributeValuesEditor extends javax.swing.JPanel implements EditorR
         jValue.setEnabled(false);
     }
 
+    /**
+     *
+     */
+    @Override
     public void writeValueInsert() {
 
         id = UUID.randomUUID().toString();
@@ -72,6 +89,11 @@ public class AttributeValuesEditor extends javax.swing.JPanel implements EditorR
         jValue.setEnabled(true);
     }
 
+    /**
+     *
+     * @param value
+     */
+    @Override
     public void writeValueEdit(Object value) {
 
         Object[] obj = (Object[]) value;
@@ -83,6 +105,11 @@ public class AttributeValuesEditor extends javax.swing.JPanel implements EditorR
         jValue.setEnabled(true);
     }
 
+    /**
+     *
+     * @param value
+     */
+    @Override
     public void writeValueDelete(Object value) {
 
         Object[] obj = (Object[]) value;
@@ -94,10 +121,21 @@ public class AttributeValuesEditor extends javax.swing.JPanel implements EditorR
         jValue.setEnabled(false);
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public Component getComponent() {
         return this;
     }
 
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public Object createValue() throws BasicException {
         return new Object[] {
             id,
@@ -118,13 +156,15 @@ public class AttributeValuesEditor extends javax.swing.JPanel implements EditorR
         jLabel2 = new javax.swing.JLabel();
         jValue = new javax.swing.JTextField();
 
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel2.setText(AppLocal.getIntString("label.value")); // NOI18N
+
+        jValue.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 316, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -134,13 +174,12 @@ public class AttributeValuesEditor extends javax.swing.JPanel implements EditorR
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 43, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jValue, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

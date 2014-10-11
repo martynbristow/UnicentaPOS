@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
 //    Copyright (C) 2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.config;
 
@@ -32,7 +32,8 @@ public class ParametersPrinter extends javax.swing.JPanel implements ParametersC
 
     private String othersizename = "standard";
 
-    /** Creates new form ParametersPrinter */
+    /** Creates new form ParametersPrinter
+     * @param printernames */
     public ParametersPrinter(String [] printernames) {
         initComponents();
         
@@ -43,15 +44,27 @@ public class ParametersPrinter extends javax.swing.JPanel implements ParametersC
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Component getComponent() {
         return this;
     }
 
+    /**
+     *
+     * @param dirty
+     */
     public void addDirtyManager(DirtyManager dirty) {
         jPrinters.addActionListener(dirty);
         jReceiptPrinter.addActionListener(dirty);
     }
 
+    /**
+     *
+     * @param p
+     */
     public void setParameters(StringParser p) {
         jPrinters.setSelectedItem(p.nextToken(','));
         String sizename = p.nextToken(',');
@@ -59,6 +72,10 @@ public class ParametersPrinter extends javax.swing.JPanel implements ParametersC
         othersizename = "receipt".equals(sizename) ? "standard" : sizename;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getParameters() {
         return comboValue(jPrinters.getSelectedItem()) + "," + boolValue(jReceiptPrinter.isSelected());
     }
@@ -83,6 +100,15 @@ public class ParametersPrinter extends javax.swing.JPanel implements ParametersC
         jPrinters = new javax.swing.JComboBox();
         jReceiptPrinter = new javax.swing.JCheckBox();
 
+        jPrinters.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jPrinters.setPreferredSize(new java.awt.Dimension(200, 23));
+        jPrinters.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPrintersActionPerformed(evt);
+            }
+        });
+
+        jReceiptPrinter.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jReceiptPrinter.setSelected(true);
         jReceiptPrinter.setText(AppLocal.getIntString("label.receiptprinter")); // NOI18N
 
@@ -90,24 +116,26 @@ public class ParametersPrinter extends javax.swing.JPanel implements ParametersC
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPrinters, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPrinters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jReceiptPrinter)
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 61, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jPrinters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jReceiptPrinter))
-                .addContainerGap(37, Short.MAX_VALUE))
+                    .addComponent(jReceiptPrinter, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jPrintersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPrintersActionPerformed
+
+    }//GEN-LAST:event_jPrintersActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

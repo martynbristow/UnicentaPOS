@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
 //    Copyright (C) 2008-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.payment;
 
@@ -33,16 +33,28 @@ public class ConfigPaymentPanelEmpty extends javax.swing.JPanel implements Payme
         initComponents();
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public JPanel getComponent() {  
         return this;
     }
     
+    /**
+     *
+     * @param config
+     */
     @Override
     public void loadProperties(AppConfig config) {
         
     }
     
+    /**
+     *
+     * @param config
+     */
     @Override
     public void saveProperties(AppConfig config) {
         
@@ -67,7 +79,7 @@ public class ConfigPaymentPanelEmpty extends javax.swing.JPanel implements Payme
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 75, Short.MAX_VALUE)
+            .addGap(0, 150, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

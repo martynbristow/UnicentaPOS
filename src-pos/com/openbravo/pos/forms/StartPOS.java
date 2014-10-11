@@ -1,33 +1,40 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (C) 2008-2013 Openbravo, S.L.
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>
 
 package com.openbravo.pos.forms;
 
-import java.util.Locale;
-import javax.swing.UIManager;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.instance.InstanceQuery;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.LookAndFeel;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.api.SubstanceSkin;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSkin;
+
+// JG 16 May 2013 deprecated for pushingpixels
+// import org.jvnet.substance.SubstanceLookAndFeel;
+// import org.jvnet.substance.api.SubstanceSkin;
 
 /**
  *
@@ -35,13 +42,17 @@ import org.jvnet.substance.api.SubstanceSkin;
  */
 public class StartPOS {
 
-    private static Logger logger = Logger.getLogger("com.openbravo.pos.forms.StartPOS");
+    private static final Logger logger = Logger.getLogger("com.openbravo.pos.forms.StartPOS");
+    
     
     /** Creates a new instance of StartPOS */
     private StartPOS() {
     }
-    
-    
+
+    /**
+     *
+     * @return
+     */
     public static boolean registerApp() {
                        
         // vemos si existe alguna instancia        
@@ -50,14 +61,20 @@ public class StartPOS {
             i = new InstanceQuery();
             i.getAppMessage().restoreWindow();
             return false;
-        } catch (Exception e) {
+// JG 6 May 2013 to Multicatch
+        } catch (RemoteException | NotBoundException e) {
             return true;
         }  
     }
     
+    /**
+     *
+     * @param args
+     */
     public static void main (final String args[]) {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 
                 if (!registerApp()) {
@@ -87,15 +104,15 @@ public class StartPOS {
                 // Set the look and feel.
                 try {             
                     
-                    Object laf = Class.forName(config.getProperty("swing.defaultlaf")).newInstance();
-                    
+                    Object laf = Class.forName(config.getProperty("swing.defaultlaf")).newInstance();                    
                     if (laf instanceof LookAndFeel){
                         UIManager.setLookAndFeel((LookAndFeel) laf);
                     } else if (laf instanceof SubstanceSkin) {                      
                         SubstanceLookAndFeel.setSkin((SubstanceSkin) laf);                   
                     }
-                } catch (Exception e) {
-                    logger.log(Level.WARNING, "Cannot set look and feel", e);
+// JG 6 May 2013 to multicatch
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                    logger.log(Level.WARNING, "Cannot set Look and Feel", e);
                 }
                 
                 String screenmode = config.getProperty("machine.screenmode");

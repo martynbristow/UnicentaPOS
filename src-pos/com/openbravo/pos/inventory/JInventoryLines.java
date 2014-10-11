@@ -1,39 +1,35 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.inventory;
 
+import com.openbravo.format.Formats;
+import com.openbravo.pos.forms.AppLocal;
 import java.awt.Component;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
-import com.openbravo.format.Formats;
-import com.openbravo.pos.forms.AppLocal;
 
 /**
  *
@@ -78,15 +74,26 @@ public class JInventoryLines extends javax.swing.JPanel {
         m_tableinventory.setModel(m_inventorylines);        
     }
     
+    /**
+     *
+     */
     public void clear() {
         m_inventorylines.clear();
     }
     
+    /**
+     *
+     * @param i
+     */
     public void addLine(InventoryLine i) {
         m_inventorylines.addRow(i);
         setSelectedIndex(m_inventorylines.getRowCount() - 1);        
     }
     
+    /**
+     *
+     * @param index
+     */
     public void deleteLine(int index) {
         m_inventorylines.removeRow(index);
 
@@ -101,27 +108,53 @@ public class JInventoryLines extends javax.swing.JPanel {
         }         
     }
     
+    /**
+     *
+     * @param index
+     * @param i
+     */
     public void setLine(int index, InventoryLine i) {
         m_inventorylines.setRow(index, i);
         setSelectedIndex(index);
     }
     
+    /**
+     *
+     * @param index
+     * @return
+     */
     public InventoryLine getLine(int index) {
         return m_inventorylines.getRow(index);
     }
     
+    /**
+     *
+     * @return
+     */
     public List<InventoryLine> getLines() {
         return m_inventorylines.getLines();
     }
     
+    /**
+     *
+     * @return
+     */
     public int getCount() {
         return m_inventorylines.getRowCount();
     }
     
+    /**
+     *
+     * @return
+     */
     public int getSelectedRow() {
         return m_tableinventory.getSelectedRow();
-    }   
-    
+    }
+
+    /**
+     *
+     * @param i
+     */
     public void setSelectedIndex(int i){
         
         // Seleccionamos
@@ -132,6 +165,9 @@ public class JInventoryLines extends javax.swing.JPanel {
         m_tableinventory.scrollRectToVisible(oRect);
     }
     
+    /**
+     *
+     */
     public void goDown() {
 
         int i = m_tableinventory.getSelectionModel().getMaxSelectionIndex();
@@ -151,6 +187,9 @@ public class JInventoryLines extends javax.swing.JPanel {
         }        
     }
     
+    /**
+     *
+     */
     public void goUp() {
         int i = m_tableinventory.getSelectionModel().getMinSelectionIndex();
         if (i < 0){
@@ -169,19 +208,23 @@ public class JInventoryLines extends javax.swing.JPanel {
     }
     
     private static class InventoryTableModel extends AbstractTableModel {
+// JG 16 May 2013 use diamond inference        
+        private ArrayList<InventoryLine> m_rows = new ArrayList<>();
         
-        private ArrayList<InventoryLine> m_rows = new ArrayList<InventoryLine>();
-        
+        @Override
         public int getRowCount() {
             return m_rows.size();
         }
+        @Override
         public int getColumnCount() {
             return 3;
         }
+        @Override
         public String getColumnName(int column) {
             //return AppLocal.getIntString(m_acolumns[column].name);
             return "a";
         }
+        @Override
         public Object getValueAt(int row, int column) {
             
             InventoryLine i = m_rows.get(row);
@@ -197,6 +240,7 @@ public class JInventoryLines extends javax.swing.JPanel {
 
         }
   
+        @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
@@ -247,6 +291,7 @@ public class JInventoryLines extends javax.swing.JPanel {
             m_iAlignment = align;
         }
         
+        @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
             
             JLabel aux = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -264,12 +309,15 @@ public class JInventoryLines extends javax.swing.JPanel {
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
-    // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
         jScrollPane1 = new javax.swing.JScrollPane();
         m_tableinventory = new javax.swing.JTable();
 
         setLayout(new java.awt.BorderLayout());
+
+        jScrollPane1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
         m_tableinventory.setAutoCreateColumnsFromModel(false);
         m_tableinventory.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
@@ -279,7 +327,6 @@ public class JInventoryLines extends javax.swing.JPanel {
         jScrollPane1.setViewportView(m_tableinventory);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
     }// </editor-fold>//GEN-END:initComponents
     
     

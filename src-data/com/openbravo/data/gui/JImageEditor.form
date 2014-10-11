@@ -4,6 +4,7 @@
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
@@ -26,6 +27,9 @@
         <Component class="javax.swing.JLabel" name="m_jImage">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/com/openbravo/images/no_photo.png"/>
+            </Property>
             <Property name="horizontalTextPosition" type="int" value="0"/>
           </Properties>
         </Component>
@@ -63,8 +67,9 @@
             <Component class="javax.swing.JButton" name="m_jbtnopen">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/com/openbravo/images/fileopen.png"/>
+                  <Image iconType="3" name="/com/openbravo/images/camera.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Open Folder"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="m_jbtnopenActionPerformed"/>
@@ -75,6 +80,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/com/openbravo/images/fileclose.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Remove Picture"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="m_jbtncloseActionPerformed"/>
@@ -85,6 +91,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/com/openbravo/images/viewmag+.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Zoom In"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="m_jbtnzoominActionPerformed"/>
@@ -118,6 +125,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/com/openbravo/images/viewmag-.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Zoom Out"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="m_jbtnzoomoutActionPerformed"/>

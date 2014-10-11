@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.panels;
 
@@ -32,30 +32,61 @@ import javax.swing.ListCellRenderer;
  */
 public abstract class JPanelTable2 extends JPanelTable {
    
+    /**
+     *
+     */
     protected Row row;
+
+    /**
+     *
+     */
     protected ListProvider lpr;
-    protected SaveProvider spr;   
-    
+
+    /**
+     *
+     */
+    protected SaveProvider spr;
+
+    /**
+     *
+     * @return
+     */
     @Override
     public final ListProvider getListProvider() {
         return lpr;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public final SaveProvider getSaveProvider() {
         return spr;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public final Vectorer getVectorer() {
         return row.getVectorer();
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public final ComparatorCreator getComparatorCreator() {
         return row.getComparatorCreator();
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public final ListCellRenderer getListCellRenderer() {
         return row.getListCellRenderer();

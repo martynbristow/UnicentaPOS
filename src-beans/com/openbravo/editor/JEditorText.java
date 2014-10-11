@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.editor;
 
@@ -24,18 +24,55 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 import com.openbravo.basic.BasicException;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public abstract class JEditorText extends JEditorAbstract {
     
+    /**
+     *
+     */
     protected String m_svalue;
     
+    /**
+     *
+     */
     public static final int MODE_Abc1 = 0;
+
+    /**
+     *
+     */
     public static final int MODE_abc1 = 1;
+
+    /**
+     *
+     */
     public static final int MODE_ABC1 = 2;
+
+    /**
+     *
+     */
     public static final int MODE_123 = 3;    
+
+    /**
+     *
+     */
     public int m_iMode;
     
+    /**
+     *
+     */
     protected int m_iTicks;
+
+    /**
+     *
+     */
     protected char m_cLastChar;
+
+    /**
+     *
+     */
     protected long m_lcount;
     
     private Timer m_jtimer;
@@ -74,9 +111,15 @@ public abstract class JEditorText extends JEditorAbstract {
         m_jtimer.start();
     }
     
+    /**
+     *
+     * @return
+     */
     protected abstract int getStartMode();
 
-    
+    /**
+     *
+     */
     public final void reset() {
         
         String sOldText = getText();
@@ -90,8 +133,12 @@ public abstract class JEditorText extends JEditorAbstract {
         reprintText();
         
         firePropertyChange("Text", sOldText, getText());
-    } 
-    
+    }
+
+    /**
+     *
+     * @param sText
+     */
     public final void setText(String sText) {
         
         String sOldText = getText();
@@ -105,6 +152,10 @@ public abstract class JEditorText extends JEditorAbstract {
         firePropertyChange("Text", sOldText, getText());
     }
     
+    /**
+     *
+     * @param iMode
+     */
     public final void setEditModeEnum(int iMode) {
         
         m_iMode = iMode;
@@ -112,8 +163,12 @@ public abstract class JEditorText extends JEditorAbstract {
         m_cLastChar = '\u0000';  
         
         reprintText();
-    }    
-    
+    }
+
+    /**
+     *
+     * @return
+     */
     public final String getText() {
         if (m_cLastChar == '\u0000') {
             return m_svalue;
@@ -122,10 +177,18 @@ public abstract class JEditorText extends JEditorAbstract {
         }        
     }
       
+    /**
+     *
+     * @return
+     */
     protected final int getAlignment() {
         return javax.swing.SwingConstants.LEFT;
     }
        
+    /**
+     *
+     * @return
+     */
     protected final String getEditMode() {
         switch (m_iMode) {
         case MODE_Abc1: return "Abc1";
@@ -136,9 +199,13 @@ public abstract class JEditorText extends JEditorAbstract {
         }
     }
     
+    /**
+     *
+     * @return
+     */
     protected String getTextEdit() {
         
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder();
         s.append("<html>");
         if (m_svalue != null) {
             s.append(m_svalue);
@@ -153,12 +220,21 @@ public abstract class JEditorText extends JEditorAbstract {
         return s.toString(); 
     }
     
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
     protected String getTextFormat() throws BasicException {
         return (m_svalue == null)
                 ? "<html>"
                 : "<html>" + m_svalue;
     }
     
+    /**
+     *
+     * @param c
+     */
     protected void typeCharInternal(char c) {
         
         String sOldText = getText();
@@ -196,6 +272,10 @@ public abstract class JEditorText extends JEditorAbstract {
         firePropertyChange("Text", sOldText, getText());
     }
     
+    /**
+     *
+     * @param c
+     */
     protected void transCharInternal(char c) {
         
         String sOldText = getText();
@@ -253,6 +333,10 @@ public abstract class JEditorText extends JEditorAbstract {
         }
     }
     
+    /**
+     *
+     * @return
+     */
     protected char getKeyChar() {
         
         char[] clist = null;
@@ -311,7 +395,7 @@ public abstract class JEditorText extends JEditorAbstract {
     }    
     
     private String appendChar2Value(char c) {
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder();
         if (m_svalue != null) {
             s.append(m_svalue);
         }

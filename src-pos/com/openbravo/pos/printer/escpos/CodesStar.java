@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.printer.escpos;
 
@@ -23,10 +23,18 @@ import com.openbravo.pos.printer.DevicePrinter;
 import com.openbravo.pos.printer.DeviceTicket;
 import java.awt.image.BufferedImage;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class CodesStar extends Codes {
 
     // set line interspacing to 4mm
-    public static final byte[] INITSEQUENCE = {0x1B, 0x7A, 0x01};
+
+    /**
+     *
+     */
+        public static final byte[] INITSEQUENCE = {0x1B, 0x7A, 0x01};
 
     private static final byte[] CHAR_SIZE_0 = {0x1B, 0x69, 0x00, 0x00};
     private static final byte[] CHAR_SIZE_1 = {0x1B, 0x69, 0x01, 0x00};
@@ -44,30 +52,124 @@ public class CodesStar extends Codes {
     private static final byte[] IMAGE_BEGIN = {0x1B, 0x30};
     private static final byte[] IMAGE_END = {0x1B, 0x7A, 0x01};
     private static final byte[] IMAGE_HEADER = {0x1B, 0x4B};
+    private static final byte[] IMAGE_LOGO = {0x1B, 0x1C, 0x70,0x01, 0x00};
     private static final byte[] NEW_LINE = {0x0D, 0x0A}; // Print and carriage return
+
     
     /** Creates a new instance of CodesStar */
     public CodesStar() {
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getInitSequence() { return INITSEQUENCE; }
      
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getSize0() { return CHAR_SIZE_0; }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getSize1() { return CHAR_SIZE_1; }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getSize2() { return CHAR_SIZE_2; }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getSize3() { return CHAR_SIZE_3; }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getBoldSet() { return BOLD_SET; }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getBoldReset() { return BOLD_RESET; }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getUnderlineSet() { return UNDERLINE_SET; }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getUnderlineReset() { return UNDERLINE_RESET; }
     
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getOpenDrawer() { return OPEN_DRAWER; }    
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getCutReceipt() { return PARTIAL_CUT; }   
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getNewLine() { return NEW_LINE; } 
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public byte[] getImageHeader() { return IMAGE_HEADER; }     
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public int getImageWidth() { return 192; }
     
+    /**
+     *
+     * @return
+     */
+    @Override
+    public byte[] getImageLogo(){ return IMAGE_LOGO; }
+
+    /**
+     *
+     * @param image
+     * @return
+     */
     @Override
     public byte[] transImage(BufferedImage image) {
 
@@ -95,7 +197,8 @@ public class CodesStar extends Codes {
             System.arraycopy(getImageHeader(), 0, bData, index, getImageHeader().length);
             index += getImageHeader().length;
             
-             // Line Dimension
+        // Line Dimension
+        // JG note: nested ++'s not good construct need change later            
             bData[index ++] = (byte) (iWidth % 256);
             bData[index ++] = (byte) (iWidth / 256);           
             
@@ -121,6 +224,13 @@ public class CodesStar extends Codes {
         return bData;
     }
 
+    /**
+     *
+     * @param out
+     * @param type
+     * @param position
+     * @param code
+     */
     @Override
     public void printBarcode(PrinterWritter out, String type, String position, String code) {
 

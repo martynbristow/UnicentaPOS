@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.data.loader;
 
@@ -29,21 +29,28 @@ import java.sql.SQLException;
  * Created on February 6, 2007, 4:06 PM
  *
  */
-public class Session {
+public final class Session {
     
-    private String m_surl;
-    private String m_suser;
-    private String m_spassword;
+    private final String m_surl;
+    private final String m_sappuser;
+    private final String m_spassword;
     
     private Connection m_c;
     private boolean m_bInTransaction;
 
+    /**
+     *
+     */
     public final SessionDB DB;
     
-    /** Creates a new instance of Session */
+    /** Creates a new instance of Session
+     * @param url
+     * @param user
+     * @param password
+     * @throws java.sql.SQLException */
     public Session(String url, String user, String password) throws SQLException {
         m_surl = url;
-        m_suser = user;
+        m_sappuser = user;
         m_spassword = password;
         
         m_c = null;
@@ -54,19 +61,26 @@ public class Session {
         DB = getDiff();
     }
     
+    /**
+     *
+     * @throws SQLException
+     */
     public void connect() throws SQLException {
         
         // primero cerramos si no estabamos cerrados
         close();
         
         // creamos una nueva conexion.
-        m_c = (m_suser == null && m_spassword == null)
+        m_c = (m_sappuser == null && m_spassword == null)
         ? DriverManager.getConnection(m_surl)
-        : DriverManager.getConnection(m_surl, m_suser, m_spassword);         
+        : DriverManager.getConnection(m_surl, m_sappuser, m_spassword);         
         m_c.setAutoCommit(true);
         m_bInTransaction = false;
     }     
 
+    /**
+     *
+     */
     public void close() {
         
         if (m_c != null) {
@@ -85,6 +99,11 @@ public class Session {
         }
     }
     
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public Connection getConnection() throws SQLException {
         
         if (!m_bInTransaction) {
@@ -93,6 +112,10 @@ public class Session {
         return m_c;
     }
     
+    /**
+     *
+     * @throws SQLException
+     */
     public void begin() throws SQLException {
         
         if (m_bInTransaction) {
@@ -103,6 +126,11 @@ public class Session {
             m_bInTransaction = true;
         }
     }
+
+    /**
+     *
+     * @throws SQLException
+     */
     public void commit() throws SQLException {
         if (m_bInTransaction) {
             m_bInTransaction = false; // lo primero salimos del estado
@@ -112,6 +140,11 @@ public class Session {
             throw new SQLException("Transaction not started");
         }
     }
+
+    /**
+     *
+     * @throws SQLException
+     */
     public void rollback() throws SQLException {
         if (m_bInTransaction) {
             m_bInTransaction = false; // lo primero salimos del estado
@@ -121,6 +154,11 @@ public class Session {
             throw new SQLException("Transaction not started");
         }
     }
+
+    /**
+     *
+     * @return
+     */
     public boolean isTransaction() {
         return m_bInTransaction;
     }
@@ -141,6 +179,11 @@ public class Session {
         }
     }  
 
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public String getURL() throws SQLException {
         return getConnection().getMetaData().getURL();
     }
@@ -148,19 +191,19 @@ public class Session {
     private SessionDB getDiff() throws SQLException {
 
         String sdbmanager = getConnection().getMetaData().getDatabaseProductName();
-
-        if ("HSQL Database Engine".equals(sdbmanager)) {
-            return new SessionDBHSQLDB();
-        } else if ("MySQL".equals(sdbmanager)) {
-            return new SessionDBMySQL();
-        } else if ("PostgreSQL".equals(sdbmanager)) {
-            return new SessionDBPostgreSQL();
-        } else if ("Oracle".equals(sdbmanager)) {
-            return new SessionDBOracle();
-        } else if ("Apache Derby".equals(sdbmanager)) {
-            return new SessionDBDerby();
-        } else {
-            return new SessionDBGeneric(sdbmanager);
+        switch (sdbmanager) {
+            case "HSQL Database Engine":
+                return new SessionDBHSQLDB();
+            case "MySQL":
+                return new SessionDBMySQL();
+            case "PostgreSQL":
+                return new SessionDBPostgreSQL();
+            case "Oracle":
+                return new SessionDBOracle();
+            case "Apache Derby":
+                return new SessionDBDerby();
+            default:
+                return new SessionDBGeneric(sdbmanager);
         }
     }
 }

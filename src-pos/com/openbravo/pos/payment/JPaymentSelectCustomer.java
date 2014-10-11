@@ -1,29 +1,25 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.payment;
 
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Dialog;
-import java.awt.Frame;
-import java.awt.Window;
+import java.awt.*;
 
 /**
  *
@@ -31,15 +27,26 @@ import java.awt.Window;
  */
 public class JPaymentSelectCustomer extends JPaymentSelect {
     
-    /** Creates new form JPaymentSelect */
+    /** Creates new form JPaymentSelect
+     * @param parent
+     * @param modal
+     * @param o */
     protected JPaymentSelectCustomer(java.awt.Frame parent, boolean modal, ComponentOrientation o) {
         super(parent, modal, o);
     }
-    /** Creates new form JPaymentSelect */
+    /** Creates new form JPaymentSelect
+     * @param parent
+     * @param modal
+     * @param o */
     protected JPaymentSelectCustomer(java.awt.Dialog parent, boolean modal, ComponentOrientation o) {
         super(parent, modal, o);
-    } 
-    
+    }
+
+    /**
+     *
+     * @param parent
+     * @return
+     */
     public static JPaymentSelect getDialog(Component parent) {
 
         Window window = getWindow(parent);
@@ -49,24 +56,41 @@ public class JPaymentSelectCustomer extends JPaymentSelect {
         } else {
             return new JPaymentSelectCustomer((Dialog) window, true, parent.getComponentOrientation());
         } 
-    } 
-    
+    }
+
+    /**
+     *
+     */
+    @Override
     protected void addTabs() {
-        
+// Bank Payment Receipt - Thanks Steve Clough! August 2011
         addTabPayment(new JPaymentSelect.JPaymentCashCreator());
         addTabPayment(new JPaymentSelect.JPaymentChequeCreator());
         addTabPayment(new JPaymentSelect.JPaymentPaperCreator());
+        addTabPayment(new JPaymentSelect.JPaymentBankCreator());
         addTabPayment(new JPaymentSelect.JPaymentMagcardCreator());
         setHeaderVisible(true);
     }
     
+    /**
+     *
+     * @param isPositive
+     * @param isComplete
+     */
+    @Override
     protected void setStatusPanel(boolean isPositive, boolean isComplete) {
         
         setAddEnabled(isPositive && !isComplete);
         setOKEnabled(isPositive);
     }
     
+    /**
+     *
+     * @param total
+     * @return
+     */
+    @Override
     protected PaymentInfo getDefaultPayment(double total) {
-        return new PaymentInfoCash(total, total);
+        return new PaymentInfoCash_original(total, total);
     }    
 }

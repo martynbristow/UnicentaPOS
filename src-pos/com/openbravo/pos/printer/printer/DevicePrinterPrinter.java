@@ -1,51 +1,46 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.printer.printer;
 
 import com.openbravo.data.gui.JMessageDialog;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.pos.forms.AppLocal;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import javax.swing.JComponent;
 import com.openbravo.pos.printer.DevicePrinter;
 import com.openbravo.pos.printer.ticket.BasicTicket;
 import com.openbravo.pos.printer.ticket.BasicTicketForPrinter;
 import com.openbravo.pos.util.ReportUtils;
 import com.openbravo.pos.util.SelectPrinter;
 import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintException;
-import javax.print.PrintService;
-import javax.print.SimpleDoc;
+import javax.print.*;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.JobName;
 import javax.print.attribute.standard.Media;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.OrientationRequested;
+import javax.swing.JComponent;
 
 /**
  *Class DevicePrinterPrinter is responsible for printing tickets using system <br>
@@ -59,12 +54,13 @@ import javax.print.attribute.standard.OrientationRequested;
  */
 public class DevicePrinterPrinter implements DevicePrinter {
 
-    private static Logger logger = Logger.getLogger("com.openbravo.pos.printer.printer.DevicePrinterPrinter");
+    private static final Logger logger = Logger.getLogger("com.openbravo.pos.printer.printer.DevicePrinterPrinter");
 
     private Component parent;
     /*name of a printer*/
     private String m_sName;
     /*a ticket to print*/
+//    private BasicTicketForPrinter m_ticketcurrent;
     private BasicTicket m_ticketcurrent;
     /*system printer*/
     private PrintService printservice;
@@ -88,14 +84,20 @@ public class DevicePrinterPrinter implements DevicePrinter {
     private int imageable_x;
     private int imageable_y;
     private Media media;
-
-    private static final HashMap<String, MediaSizeName> mediasizenamemap = new HashMap<String, MediaSizeName>();
+    
+    // JG 16 May 12 use multicatch
+    private static final HashMap<String, MediaSizeName> mediasizenamemap = new HashMap<>();
 
     /** 
      * Creates a new instance of DevicePrinterPrinter
      * 
+     * @param parent
      * @param printername - name of printer that will be called in the system
-     * @param isReceiptPrinter - string with boolean values if the printer is a receipt
+     * @param imageable_x
+     * @param imageable_y
+     * @param imageable_height
+     * @param imageable_width
+     * @param mediasizename
      */
     public DevicePrinterPrinter(Component parent, String printername, int imageable_x, int imageable_y, int imageable_width, int imageable_height, String mediasizename) {
 
@@ -173,6 +175,22 @@ public class DevicePrinterPrinter implements DevicePrinter {
      * @param type a type of a barcode
      * @param position coordinates of a barcode on a receipt
      * @param code the code of a productmiale
+     */
+
+    /**
+     * Method that is responsible for printing a barcode
+     * @param position coordinates of a barcode on a receipt
+     * @param code the code of a productmiale
+     */
+    @Override
+    public void printLogo(){   
+    }
+
+    /**
+     *
+     * @param type
+     * @param position
+     * @param code
      */
     @Override
     public void printBarCode(String type, String position, String code) {

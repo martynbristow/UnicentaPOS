@@ -1,43 +1,87 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.data.loader;
 
-import java.util.*;
 import com.openbravo.basic.BasicException;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public abstract class BaseSentence implements SentenceList, SentenceFind, SentenceExec {
 
-    // Funciones de bajo nivel    
-    public abstract DataResultSet openExec(Object params) throws BasicException;
+    // Funciones de bajo nivel
+
+    /**
+     *
+     * @param params
+     * @return
+     * @throws BasicException
+     */
+        public abstract DataResultSet openExec(Object params) throws BasicException;
+
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
     public abstract DataResultSet moreResults() throws BasicException;
+
+    /**
+     *
+     * @throws BasicException
+     */
     public abstract void closeExec() throws BasicException;
 
     // Funciones
+
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+        @Override
     public final int exec() throws BasicException {
         return exec((Object) null);
     }
 
+    /**
+     *
+     * @param params
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public final int exec(Object... params) throws BasicException {
         return exec((Object) params);
     }
 
+    /**
+     *
+     * @param params
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public final int exec(Object params) throws BasicException {        
         DataResultSet SRS = openExec(params);
         if (SRS == null) {
@@ -49,15 +93,34 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
         return iResult;
     }
 
-    
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public final List list() throws BasicException {
         return list((Object) null);
     }
 
+    /**
+     *
+     * @param params
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public final List list(Object... params) throws BasicException {
         return list((Object) params);
     }
 
+    /**
+     *
+     * @param params
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public final List list(Object params) throws BasicException {
     // En caso de error o lanza un pepinazo en forma de DataException 
         DataResultSet SRS = openExec(params);
@@ -67,9 +130,27 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
         return aSO;
     }
     
+    /**
+     *
+     * @param offset
+     * @param length
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public final List listPage(int offset, int length) throws BasicException {
         return listPage(null, offset, length);
     }
+
+    /**
+     *
+     * @param params
+     * @param offset
+     * @param length
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public final List listPage(Object params, int offset, int length) throws BasicException {
     // En caso de error o lanza un pepinazo en forma de DataException         
         DataResultSet SRS = openExec(params);
@@ -79,14 +160,34 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
         return aSO;
     }
     
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public final Object find() throws BasicException {
         return find((Object) null);
     }
 
+    /**
+     *
+     * @param params
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public final Object find(Object... params) throws BasicException {
         return find((Object) params);
     }
 
+    /**
+     *
+     * @param params
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public final Object find(Object params) throws BasicException {
     // En caso de error o lanza un pepinazo en forma de SQLException          
         DataResultSet SRS = openExec(params);
@@ -97,7 +198,14 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
     }
 
     // Utilidades
-    public final List fetchAll(DataResultSet SRS) throws BasicException {
+
+    /**
+     *
+     * @param SRS
+     * @return
+     * @throws BasicException
+     */
+        public final List fetchAll(DataResultSet SRS) throws BasicException {
         if (SRS == null) {
             throw new BasicException(LocalRes.getIntString("exception.nodataset"));
         }
@@ -110,7 +218,16 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
     }
     
     // Utilidades
-    public final List fetchPage(DataResultSet SRS, int offset, int length) throws BasicException {
+
+    /**
+     *
+     * @param SRS
+     * @param offset
+     * @param length
+     * @return
+     * @throws BasicException
+     */
+        public final List fetchPage(DataResultSet SRS, int offset, int length) throws BasicException {
         
         if (SRS == null) {
             throw new BasicException(LocalRes.getIntString("exception.nodataset"));
@@ -136,6 +253,12 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
         return aSO;            
     }
     
+    /**
+     *
+     * @param SRS
+     * @return
+     * @throws BasicException
+     */
     public final Object fetchOne(DataResultSet SRS) throws BasicException {
                        
         if (SRS == null) {

@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.sales;
 
@@ -63,11 +63,14 @@ public class JProductLineEdit extends javax.swing.JDialog {
         m_bunitsok = true;
         m_bpriceok = true;
 
-        m_jName.setEnabled(m_oLine.getProductID() == null && app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
+//  JG 7 May 14 Allow User edit of Product.Name if has EditLine permissions
+//        m_jName.setEnabled(m_oLine.getProductID() == null && app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
+        m_jName.setEnabled(app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));        
         m_jPrice.setEnabled(app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
         m_jPriceTax.setEnabled(app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
         
-        m_jName.setText(m_oLine.getProperty("product.name"));
+//        m_jName.setText(m_oLine.getProperty("product.name"));
+        m_jName.setText(oLine.getProductName());        
         m_jUnits.setDoubleValue(oLine.getMultiply());
         m_jPrice.setDoubleValue(oLine.getPrice()); 
         m_jPriceTax.setDoubleValue(oLine.getPriceTax());
@@ -112,6 +115,7 @@ public class JProductLineEdit extends javax.swing.JDialog {
     }
     
     private class RecalculateUnits implements PropertyChangeListener {
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
             Double value = m_jUnits.getDoubleValue();
             if (value == null || value == 0.0) {
@@ -126,6 +130,7 @@ public class JProductLineEdit extends javax.swing.JDialog {
     }
     
     private class RecalculatePrice implements PropertyChangeListener {
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
 
             Double value = m_jPrice.getDoubleValue();
@@ -142,6 +147,7 @@ public class JProductLineEdit extends javax.swing.JDialog {
     }    
     
     private class RecalculatePriceTax implements PropertyChangeListener {
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
 
             Double value = m_jPriceTax.getDoubleValue();
@@ -159,6 +165,7 @@ public class JProductLineEdit extends javax.swing.JDialog {
     }   
     
     private class RecalculateName implements PropertyChangeListener {
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
             m_oLine.setProperty("product.name", m_jName.getText());
         }
@@ -172,8 +179,16 @@ public class JProductLineEdit extends javax.swing.JDialog {
         } else {
             return getWindow(parent.getParent());
         }
-    }       
-    
+    }
+
+    /**
+     *
+     * @param parent
+     * @param app
+     * @param oLine
+     * @return
+     * @throws BasicException
+     */
     public static TicketLineInfo showMessage(Component parent, AppView app, TicketLineInfo oLine) throws BasicException {
          
         Window window = getWindow(parent);
@@ -213,8 +228,8 @@ public class JProductLineEdit extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         m_jSubtotal = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        m_jButtonOK = new javax.swing.JButton();
         m_jButtonCancel = new javax.swing.JButton();
+        m_jButtonOK = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         m_jKeys = new com.openbravo.editor.JEditorKeys();
@@ -226,31 +241,44 @@ public class JProductLineEdit extends javax.swing.JDialog {
 
         jPanel2.setLayout(null);
 
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel1.setText(AppLocal.getIntString("label.price")); // NOI18N
         jPanel2.add(jLabel1);
-        jLabel1.setBounds(10, 80, 90, 15);
+        jLabel1.setBounds(10, 80, 90, 25);
 
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel2.setText(AppLocal.getIntString("label.units")); // NOI18N
         jPanel2.add(jLabel2);
-        jLabel2.setBounds(10, 50, 90, 15);
+        jLabel2.setBounds(10, 50, 90, 25);
 
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel3.setText(AppLocal.getIntString("label.pricetax")); // NOI18N
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(10, 110, 90, 15);
+        jLabel3.setBounds(10, 110, 90, 25);
 
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel4.setText(AppLocal.getIntString("label.item")); // NOI18N
         jPanel2.add(jLabel4);
-        jLabel4.setBounds(10, 20, 90, 15);
+        jLabel4.setBounds(10, 20, 90, 25);
+
+        m_jName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel2.add(m_jName);
         m_jName.setBounds(100, 20, 270, 25);
+
+        m_jUnits.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel2.add(m_jUnits);
         m_jUnits.setBounds(100, 50, 240, 25);
+
+        m_jPrice.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel2.add(m_jPrice);
         m_jPrice.setBounds(100, 80, 240, 25);
+
+        m_jPriceTax.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel2.add(m_jPriceTax);
         m_jPriceTax.setBounds(100, 110, 240, 25);
 
         m_jTaxrate.setBackground(javax.swing.UIManager.getDefaults().getColor("TextField.disabledBackground"));
+        m_jTaxrate.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jTaxrate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         m_jTaxrate.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTaxrate.setOpaque(true);
@@ -259,15 +287,18 @@ public class JProductLineEdit extends javax.swing.JDialog {
         jPanel2.add(m_jTaxrate);
         m_jTaxrate.setBounds(100, 140, 210, 25);
 
+        jLabel5.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel5.setText(AppLocal.getIntString("label.tax")); // NOI18N
         jPanel2.add(jLabel5);
-        jLabel5.setBounds(10, 140, 90, 15);
+        jLabel5.setBounds(10, 140, 90, 25);
 
+        jLabel6.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel6.setText(AppLocal.getIntString("label.totalcash")); // NOI18N
         jPanel2.add(jLabel6);
-        jLabel6.setBounds(10, 200, 90, 15);
+        jLabel6.setBounds(10, 200, 90, 25);
 
         m_jTotal.setBackground(javax.swing.UIManager.getDefaults().getColor("TextField.disabledBackground"));
+        m_jTotal.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         m_jTotal.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTotal.setOpaque(true);
@@ -276,11 +307,13 @@ public class JProductLineEdit extends javax.swing.JDialog {
         jPanel2.add(m_jTotal);
         m_jTotal.setBounds(100, 200, 210, 25);
 
+        jLabel7.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel7.setText(AppLocal.getIntString("label.subtotalcash")); // NOI18N
         jPanel2.add(jLabel7);
-        jLabel7.setBounds(10, 170, 90, 15);
+        jLabel7.setBounds(10, 170, 90, 25);
 
         m_jSubtotal.setBackground(javax.swing.UIManager.getDefaults().getColor("TextField.disabledBackground"));
+        m_jSubtotal.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         m_jSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         m_jSubtotal.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jSubtotal.setOpaque(true);
@@ -293,20 +326,8 @@ public class JProductLineEdit extends javax.swing.JDialog {
 
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        m_jButtonOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/button_ok.png"))); // NOI18N
-        m_jButtonOK.setText(AppLocal.getIntString("Button.OK")); // NOI18N
-        m_jButtonOK.setFocusPainted(false);
-        m_jButtonOK.setFocusable(false);
-        m_jButtonOK.setMargin(new java.awt.Insets(8, 16, 8, 16));
-        m_jButtonOK.setRequestFocusEnabled(false);
-        m_jButtonOK.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_jButtonOKActionPerformed(evt);
-            }
-        });
-        jPanel1.add(m_jButtonOK);
-
-        m_jButtonCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/button_cancel.png"))); // NOI18N
+        m_jButtonCancel.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        m_jButtonCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/cancel.png"))); // NOI18N
         m_jButtonCancel.setText(AppLocal.getIntString("Button.Cancel")); // NOI18N
         m_jButtonCancel.setFocusPainted(false);
         m_jButtonCancel.setFocusable(false);
@@ -318,6 +339,20 @@ public class JProductLineEdit extends javax.swing.JDialog {
             }
         });
         jPanel1.add(m_jButtonCancel);
+
+        m_jButtonOK.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        m_jButtonOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/ok.png"))); // NOI18N
+        m_jButtonOK.setText(AppLocal.getIntString("Button.OK")); // NOI18N
+        m_jButtonOK.setFocusPainted(false);
+        m_jButtonOK.setFocusable(false);
+        m_jButtonOK.setMargin(new java.awt.Insets(8, 16, 8, 16));
+        m_jButtonOK.setRequestFocusEnabled(false);
+        m_jButtonOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jButtonOKActionPerformed(evt);
+            }
+        });
+        jPanel1.add(m_jButtonOK);
 
         jPanel5.add(jPanel1, java.awt.BorderLayout.SOUTH);
 

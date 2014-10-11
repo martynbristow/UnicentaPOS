@@ -1,47 +1,48 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.admin;
 
-import javax.swing.*;
-import com.openbravo.pos.forms.AppLocal;
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.util.UUID;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ComboBoxValModel;
 import com.openbravo.data.loader.ImageUtils;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.data.user.EditorRecord;
 import com.openbravo.format.Formats;
+import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.util.Base64Encoder;
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.util.UUID;
+import javax.swing.JPanel;
 
 /**
  *
  * @author adrianromero
  */
-public class ResourcesView extends JPanel implements EditorRecord {
+public final class ResourcesView extends JPanel implements EditorRecord {
     
     private Object m_oId;
     private ComboBoxValModel m_ResourceModel;
             
-    /** Creates new form ResourcesEditor */
+    /** Creates new form ResourcesEditor
+     * @param dirty */
     public ResourcesView(DirtyManager dirty) {
         initComponents();
         
@@ -59,6 +60,10 @@ public class ResourcesView extends JPanel implements EditorRecord {
         writeValueEOF();        
     }
 
+    /**
+     *
+     */
+    @Override
     public void writeValueEOF() {
         m_oId = null;
         m_jName.setText(null);
@@ -69,8 +74,12 @@ public class ResourcesView extends JPanel implements EditorRecord {
         m_jType.setEnabled(false);
         m_jText.setEnabled(false);
         m_jImage.setEnabled(false);
-    }    
-    
+    }
+
+    /**
+     *
+     */
+    @Override
     public void writeValueInsert() {
         m_oId = null;
         m_jName.setText(null);
@@ -83,6 +92,11 @@ public class ResourcesView extends JPanel implements EditorRecord {
         m_jImage.setEnabled(true);
     }
     
+    /**
+     *
+     * @param value
+     */
+    @Override
     public void writeValueDelete(Object value) {
         Object[] resource = (Object[]) value;
         m_oId = resource[0];
@@ -111,8 +125,13 @@ public class ResourcesView extends JPanel implements EditorRecord {
         m_jType.setEnabled(false);
         m_jText.setEnabled(false);
         m_jImage.setEnabled(false);       
-    }  
-    
+    }
+
+    /**
+     *
+     * @param value
+     */
+    @Override
     public void writeValueEdit(Object value) {
         Object[] resource = (Object[]) value;
         m_oId = resource[0];
@@ -143,6 +162,12 @@ public class ResourcesView extends JPanel implements EditorRecord {
         m_jImage.setEnabled(true);
     }
     
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public Object createValue() throws BasicException {
         Object[] resource = new Object[4];
 
@@ -164,10 +189,19 @@ public class ResourcesView extends JPanel implements EditorRecord {
         return resource;
     }
     
+    /**
+     *
+     * @return
+     */
+    @Override
     public Component getComponent() {
         return this;
     }
     
+    /**
+     *
+     */
+    @Override
     public void refresh() {
     }
     
@@ -199,7 +233,7 @@ public class ResourcesView extends JPanel implements EditorRecord {
 
         m_jContainer.setLayout(new java.awt.CardLayout());
 
-        m_jText.setFont(new java.awt.Font("DialogInput", 0, 12));
+        m_jText.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jScrollPane1.setViewportView(m_jText);
 
         m_jContainer.add(jScrollPane1, "text");
@@ -208,8 +242,12 @@ public class ResourcesView extends JPanel implements EditorRecord {
 
         jPanel3.add(m_jContainer, java.awt.BorderLayout.CENTER);
 
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel2.setText(AppLocal.getIntString("label.resname")); // NOI18N
 
+        m_jName.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+
+        m_jType.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         m_jType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jTypeActionPerformed(evt);
@@ -229,7 +267,8 @@ public class ResourcesView extends JPanel implements EditorRecord {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(m_jType, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(m_jType, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -237,9 +276,9 @@ public class ResourcesView extends JPanel implements EditorRecord {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(m_jType, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jType, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                 .addContainerGap())

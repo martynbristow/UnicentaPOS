@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.customers;
 
@@ -23,13 +23,7 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.format.Formats;
-import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.AppView;
-import com.openbravo.pos.forms.BeanFactoryApp;
-import com.openbravo.pos.forms.BeanFactoryException;
-import com.openbravo.pos.forms.DataLogicSales;
-import com.openbravo.pos.forms.DataLogicSystem;
-import com.openbravo.pos.forms.JPanelView;
+import com.openbravo.pos.forms.*;
 import com.openbravo.pos.payment.JPaymentSelect;
 import com.openbravo.pos.payment.JPaymentSelectCustomer;
 import com.openbravo.pos.payment.PaymentInfo;
@@ -73,6 +67,12 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         txtNotes.addPropertyChangeListener("Text", dirty);
     }
 
+    /**
+     *
+     * @param app
+     * @throws BeanFactoryException
+     */
+    @Override
     public void init(AppView app) throws BeanFactoryException {
 
         this.app = app;
@@ -82,14 +82,29 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         ttp = new TicketParser(app.getDeviceTicket(), dlsystem);
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public Object getBean() {
         return this;
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public String getTitle() {
         return AppLocal.getIntString("Menu.CustomersPayment");
     }
 
+    /**
+     *
+     * @throws BasicException
+     */
+    @Override
     public void activate() throws BasicException {
 
         paymentdialog = JPaymentSelectCustomer.getDialog(this);        
@@ -101,6 +116,11 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         editorcard.activate();
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public boolean deactivate() {
         if (dirty.isDirty()) {
             int res = JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.wannasave"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -115,6 +135,11 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         }
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public JComponent getComponent() {
         return this;
     }
@@ -137,7 +162,10 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         dirty.setDirty(false);
 
         btnSave.setEnabled(true);    
+        btnPay.setEnabled(true);
+        
         btnPay.setEnabled(customer.getCurdebt() != null && customer.getCurdebt().doubleValue() > 0.0);
+        
     }
 
     private void resetCustomer() {
@@ -207,10 +235,8 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                 script.put("ticket", ticket);
                 script.put("customer", customer);
                 ttp.printTicket(script.eval(resource).toString());
-            } catch (ScriptException e) {
-                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintticket"), e);
-                msg.show(this);
-            } catch (TicketPrinterException e) {
+// JG 6 May use multicatch
+            } catch (    ScriptException | TicketPrinterException e) {
                 MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintticket"), e);
                 msg.show(this);
             }
@@ -258,7 +284,8 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        btnCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png"))); // NOI18N
+        btnCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/customer_sml.png"))); // NOI18N
+        btnCustomer.setToolTipText("Customer Account");
         btnCustomer.setFocusPainted(false);
         btnCustomer.setFocusable(false);
         btnCustomer.setMargin(new java.awt.Insets(8, 14, 8, 14));
@@ -271,6 +298,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         jPanel6.add(btnCustomer);
 
         btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/filesave.png"))); // NOI18N
+        btnSave.setToolTipText("Save");
         btnSave.setFocusPainted(false);
         btnSave.setFocusable(false);
         btnSave.setMargin(new java.awt.Insets(8, 14, 8, 14));
@@ -283,11 +311,16 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         jPanel6.add(btnSave);
         jPanel6.add(jSeparator1);
 
-        btnPay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/greenled.png"))); // NOI18N
+        btnPay.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnPay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/pay.png"))); // NOI18N
         btnPay.setText(AppLocal.getIntString("button.pay")); // NOI18N
+        btnPay.setToolTipText("Pay Account");
         btnPay.setFocusPainted(false);
         btnPay.setFocusable(false);
         btnPay.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        btnPay.setMaximumSize(new java.awt.Dimension(110, 44));
+        btnPay.setMinimumSize(new java.awt.Dimension(110, 44));
+        btnPay.setPreferredSize(new java.awt.Dimension(110, 44));
         btnPay.setRequestFocusEnabled(false);
         btnPay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -315,7 +348,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         jPanel5.setLayout(new java.awt.GridBagLayout());
         jPanel5.add(editorcard, new java.awt.GridBagConstraints());
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/button_ok.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/ok.png"))); // NOI18N
         jButton1.setFocusPainted(false);
         jButton1.setFocusable(false);
         jButton1.setMargin(new java.awt.Insets(8, 14, 8, 14));
@@ -340,45 +373,61 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         add(jPanel3, java.awt.BorderLayout.LINE_END);
 
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel3.setText(AppLocal.getIntString("label.name")); // NOI18N
 
+        jLabel12.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel12.setText(AppLocal.getIntString("label.notes")); // NOI18N
 
+        jLabel5.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel5.setText(AppLocal.getIntString("label.card")); // NOI18N
 
         txtCard.setEditable(false);
+        txtCard.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtCard.setFocusable(false);
         txtCard.setRequestFocusEnabled(false);
 
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel1.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
 
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel2.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
 
         txtCurdebt.setEditable(false);
+        txtCurdebt.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtCurdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtCurdebt.setFocusable(false);
         txtCurdebt.setRequestFocusEnabled(false);
 
         txtCurdate.setEditable(false);
+        txtCurdate.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCurdate.setFocusable(false);
         txtCurdate.setRequestFocusEnabled(false);
 
+        jLabel6.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel6.setText(AppLocal.getIntString("label.curdate")); // NOI18N
 
         txtName.setEditable(false);
+        txtName.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtName.setFocusable(false);
         txtName.setRequestFocusEnabled(false);
 
         txtMaxdebt.setEditable(false);
+        txtMaxdebt.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtMaxdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtMaxdebt.setFocusable(false);
         txtMaxdebt.setRequestFocusEnabled(false);
 
+        txtNotes.setEnabled(false);
+        txtNotes.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+
         txtTaxId.setEditable(false);
+        txtTaxId.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtTaxId.setFocusable(false);
         txtTaxId.setRequestFocusEnabled(false);
 
+        jLabel7.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel7.setText(AppLocal.getIntString("label.taxid")); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -416,40 +465,40 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCurdate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtTaxId, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTaxId, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtCard, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCard, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12)
                     .addComponent(txtNotes, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtMaxdebt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMaxdebt, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtCurdebt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCurdebt, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtCurdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(89, Short.MAX_VALUE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCurdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(223, Short.MAX_VALUE))
         );
 
         add(jPanel1, java.awt.BorderLayout.CENTER);

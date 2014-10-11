@@ -1,42 +1,53 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.sales;
 
+import com.openbravo.pos.forms.AppLocal;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
-import com.openbravo.pos.forms.AppLocal;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class JTicketsBagTicketBag extends javax.swing.JPanel {
     
     private JTicketsBagTicket m_ticketsbagticket;
     
-    /** Creates new form JTicketsBagTicketBag */
+    /** Creates new form JTicketsBagTicketBag
+     * @param ticketsbagticket */
     public JTicketsBagTicketBag(JTicketsBagTicket ticketsbagticket) {
         m_ticketsbagticket = ticketsbagticket;
         initComponents();
     }
     
+    /**
+     *
+     */
     public void showEdit() {
         showView("edit");
     }
     
+    /**
+     *
+     */
     public void showRefund() {
         showView("refund");
     }
@@ -64,11 +75,16 @@ public class JTicketsBagTicketBag extends javax.swing.JPanel {
 
         jPanEdit.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        m_jBtnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/editdelete.png"))); // NOI18N
+        m_jBtnDelete.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        m_jBtnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/sale_delete.png"))); // NOI18N
         m_jBtnDelete.setText(AppLocal.getIntString("Button.DeleteTicket")); // NOI18N
+        m_jBtnDelete.setToolTipText("Delete current Ticket");
         m_jBtnDelete.setFocusPainted(false);
         m_jBtnDelete.setFocusable(false);
-        m_jBtnDelete.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jBtnDelete.setMargin(new java.awt.Insets(0, 4, 0, 4));
+        m_jBtnDelete.setMaximumSize(new java.awt.Dimension(50, 40));
+        m_jBtnDelete.setMinimumSize(new java.awt.Dimension(50, 40));
+        m_jBtnDelete.setPreferredSize(new java.awt.Dimension(50, 40));
         m_jBtnDelete.setRequestFocusEnabled(false);
         m_jBtnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,11 +93,16 @@ public class JTicketsBagTicketBag extends javax.swing.JPanel {
         });
         jPanEdit.add(m_jBtnDelete);
 
-        m_jBtnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileclose.png"))); // NOI18N
+        m_jBtnCancel.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        m_jBtnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/cancel.png"))); // NOI18N
         m_jBtnCancel.setText(AppLocal.getIntString("Button.Cancel")); // NOI18N
+        m_jBtnCancel.setToolTipText("Cancel Action");
         m_jBtnCancel.setFocusPainted(false);
         m_jBtnCancel.setFocusable(false);
-        m_jBtnCancel.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jBtnCancel.setMargin(new java.awt.Insets(0, 4, 0, 4));
+        m_jBtnCancel.setMaximumSize(new java.awt.Dimension(50, 40));
+        m_jBtnCancel.setMinimumSize(new java.awt.Dimension(50, 40));
+        m_jBtnCancel.setPreferredSize(new java.awt.Dimension(50, 40));
         m_jBtnCancel.setRequestFocusEnabled(false);
         m_jBtnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,9 +141,10 @@ public class JTicketsBagTicketBag extends javax.swing.JPanel {
         
         int res = JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.wannadelete"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (res == JOptionPane.YES_OPTION) {
-            m_ticketsbagticket.deleteTicket();
+            m_ticketsbagticket.deleteTicket(); 
+             
         }
-        
+      
     }//GEN-LAST:event_m_jBtnDeleteActionPerformed
 
     private void m_jBtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jBtnCancelActionPerformed

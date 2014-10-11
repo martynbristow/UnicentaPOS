@@ -1,40 +1,83 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.data.loader;
 
+import com.openbravo.basic.BasicException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import com.openbravo.basic.BasicException;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public abstract class Datas {
     
+    /**
+     *
+     */
     public final static Datas INT = new DatasINT();
+
+    /**
+     *
+     */
     public final static Datas STRING = new DatasSTRING();
+
+    /**
+     *
+     */
     public final static Datas DOUBLE = new DatasDOUBLE();
+
+    /**
+     *
+     */
     public final static Datas BOOLEAN = new DatasBOOLEAN();
+
+    /**
+     *
+     */
     public final static Datas TIMESTAMP = new DatasTIMESTAMP();
+
+    /**
+     *
+     */
     public final static Datas BYTES = new DatasBYTES();
+
+    /**
+     *
+     */
     public final static Datas IMAGE = new DatasIMAGE();
     //public final static Datas INPUTSTREAM = new DatasINPUTSTREAM();
-    public final static Datas OBJECT = new DatasOBJECT();
+
+    /**
+     *
+     */
+        public final static Datas OBJECT = new DatasOBJECT();
+
+    /**
+     *
+     */
     public final static Datas SERIALIZABLE = new DatasSERIALIZABLE();
+
+    /**
+     *
+     */
     public final static Datas NULL = new DatasNULL();
     
     private static DateFormat tsf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); 
@@ -43,12 +86,50 @@ public abstract class Datas {
     private Datas() {
     }
     
+    /**
+     *
+     * @param dr
+     * @param i
+     * @return
+     * @throws BasicException
+     */
     public abstract Object getValue(DataRead dr, int i) throws BasicException;
+
+    /**
+     *
+     * @param dw
+     * @param i
+     * @param value
+     * @throws BasicException
+     */
     public abstract void setValue(DataWrite dw, int i, Object value) throws BasicException;
+
+    /**
+     *
+     * @return
+     */
     public abstract Class getClassValue();
+
+    /**
+     *
+     * @param value
+     * @return
+     */
     protected abstract String toStringAbstract(Object value);
+
+    /**
+     *
+     * @param o1
+     * @param o2
+     * @return
+     */
     protected abstract int compareAbstract(Object o1, Object o2);
     
+    /**
+     *
+     * @param value
+     * @return
+     */
     public String toString(Object value) {
         if (value == null) {
             return "null";
@@ -57,6 +138,12 @@ public abstract class Datas {
         }
     }
     
+    /**
+     *
+     * @param o1
+     * @param o2
+     * @return
+     */
     public int compare(Object o1, Object o2) {
         if (o1 == null) {
             if (o2 == null) {
@@ -174,18 +261,23 @@ public abstract class Datas {
         }   
     }    
     private static final class DatasIMAGE extends Datas {
+        @Override
         public Object getValue(DataRead dr, int i) throws BasicException {
             return ImageUtils.readImage(dr.getBytes(i));
         }
+        @Override
         public void setValue(DataWrite dw, int i, Object value) throws BasicException {
             dw.setBytes(i, ImageUtils.writeImage((java.awt.image.BufferedImage) value));
         }
+        @Override
         public Class getClassValue() {
             return java.awt.image.BufferedImage.class;
         }
+        @Override
         protected String toStringAbstract(Object value) {
             return "0x" + ImageUtils.bytes2hex(ImageUtils.writeImage((java.awt.image.BufferedImage) value));
         }
+        @Override
         protected int compareAbstract(Object o1, Object o2) {
             throw new UnsupportedOperationException();
         }   
@@ -196,7 +288,6 @@ public abstract class Datas {
 //            return b == null ? null : new java.io.ByteArrayInputStream(b);
 //        }
 //        public void setValue(DataWrite dw, int i, Object value) throws DataException {
-//            // TODO: Please implement this method
 //        }
 //    }  
     private static final class DatasOBJECT extends Datas {

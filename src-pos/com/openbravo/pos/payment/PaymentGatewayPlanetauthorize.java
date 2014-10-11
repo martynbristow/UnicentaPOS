@@ -1,37 +1,29 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
 //    Copyright (C) 2008-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.payment;
 
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppProperties;
 import com.openbravo.pos.util.AltEncrypter;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.io.*;
+import java.net.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -52,6 +44,10 @@ public class PaymentGatewayPlanetauthorize implements PaymentGateway {
     private String m_sCommercePassword;
     private boolean m_bTestMode;
     
+    /**
+     *
+     * @param props
+     */
     public PaymentGatewayPlanetauthorize (AppProperties props) {
         m_sCommerceID = props.getProperty("payment.commerceid");
 
@@ -61,13 +57,20 @@ public class PaymentGatewayPlanetauthorize implements PaymentGateway {
         m_bTestMode = Boolean.valueOf(props.getProperty("payment.testmode")).booleanValue();
     }
     
+    /**
+     *
+     */
     public PaymentGatewayPlanetauthorize() {
         
     }
     
+    /**
+     *
+     * @param payinfo
+     */
     @Override
     public void execute(PaymentInfoMagcard payinfo) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         
         try {
             sb.append("username="); //test=demo

@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.data.loader;
 
@@ -35,7 +35,7 @@ public class QBFBuilder implements ISQLBuilderStatic {
     
 //    /** Creates a new instance of QBFBuilder */
 //    public QBFBuilder(TableDefinition tb, String[] asFindFields) {
-//        StringBuffer sent = new StringBuffer();
+//        StringBuilder sent = new StringBuilder();
 //        sent.append("select ");
 //        for (int i = 0; i < tb.getFields().length; i ++) {
 //            if (i > 0) {
@@ -51,7 +51,13 @@ public class QBFBuilder implements ISQLBuilderStatic {
 //        m_sSentEndPart = "";
 //        m_asFindFields = asFindFields;
 //    }
-    public QBFBuilder(String sSentence, String[] asFindFields) {
+
+    /**
+     *
+     * @param sSentence
+     * @param asFindFields
+     */
+        public QBFBuilder(String sSentence, String[] asFindFields) {
         int iPos = sSentence.indexOf("?(QBF_FILTER)");
         if (iPos < 0) {
             m_sSentBeginPart = sSentence;
@@ -65,6 +71,14 @@ public class QBFBuilder implements ISQLBuilderStatic {
         m_asFindFields = asFindFields;
     }
 
+    /**
+     *
+     * @param sw
+     * @param params
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public String getSQL(SerializerWrite sw, Object params) throws BasicException {
         
         QBFParameter mydw = new QBFParameter(m_asFindFields);
@@ -97,6 +111,7 @@ public class QBFBuilder implements ISQLBuilderStatic {
             }
         }
         
+        @Override
         public void setDouble(int paramIndex, Double dValue) throws BasicException {
             if ((paramIndex - 1) % 2 == 0) {
                 throw new BasicException(LocalRes.getIntString("exception.nocompare"));
@@ -104,6 +119,7 @@ public class QBFBuilder implements ISQLBuilderStatic {
                 m_aParams[(paramIndex - 1) / 2] = DataWriteUtils.getSQLValue(dValue);
             }
         }        
+        @Override
         public void setBoolean(int paramIndex, Boolean bValue) throws BasicException {
             if ((paramIndex - 1) % 2 == 0) {
                 throw new BasicException(LocalRes.getIntString("exception.nocompare"));
@@ -111,6 +127,7 @@ public class QBFBuilder implements ISQLBuilderStatic {
                 m_aParams[(paramIndex - 1) / 2] = DataWriteUtils.getSQLValue(bValue);
             }
         }        
+        @Override
         public void setInt(int paramIndex, Integer iValue) throws BasicException {
             if ((paramIndex - 1) % 2 == 0) {
                 throw new BasicException(LocalRes.getIntString("exception.nocompare"));
@@ -118,6 +135,7 @@ public class QBFBuilder implements ISQLBuilderStatic {
                 m_aParams[(paramIndex - 1) / 2] = DataWriteUtils.getSQLValue(iValue);
             }
         }       
+        @Override
         public void setString(int paramIndex, String sValue) throws BasicException {
             if ((paramIndex - 1) % 2 == 0) {
                 throw new BasicException(LocalRes.getIntString("exception.nocompare"));
@@ -125,6 +143,7 @@ public class QBFBuilder implements ISQLBuilderStatic {
                 m_aParams[(paramIndex - 1) / 2] = DataWriteUtils.getSQLValue(sValue);
             }
         }        
+        @Override
         public void setTimestamp(int paramIndex, java.util.Date dValue) throws BasicException {
             if ((paramIndex - 1) % 2 == 0) {
                 throw new BasicException(LocalRes.getIntString("exception.nocompare"));
@@ -139,6 +158,7 @@ public class QBFBuilder implements ISQLBuilderStatic {
 //                throw new DataException("Param type not allowed");
 //            }            
 //        }
+        @Override
         public void setBytes(int paramIndex, byte[] value) throws BasicException {
             if ((paramIndex - 1) % 2 == 0) {
                 throw new BasicException(LocalRes.getIntString("exception.nocompare"));
@@ -146,6 +166,7 @@ public class QBFBuilder implements ISQLBuilderStatic {
                 throw new BasicException("Param type not allowed");
             }
         }
+        @Override
         public void setObject(int paramIndex, Object value) throws BasicException {
             if ((paramIndex - 1) % 2 == 0) {
                 if (value instanceof QBFCompareEnum) {
@@ -161,7 +182,7 @@ public class QBFBuilder implements ISQLBuilderStatic {
         public String getFilter() {
             // El retorno debe ser siempre una expresion valida puesto que no se donde sera insertada.
             
-            StringBuffer sFilter = new StringBuffer();
+            StringBuilder sFilter = new StringBuilder();
             
             String sItem;                
             for (int i = 0; i < m_asFindFields.length; i ++) {

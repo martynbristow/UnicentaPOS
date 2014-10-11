@@ -1,45 +1,36 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.panels;
 
-import java.awt.*;
-import javax.swing.*;
-import com.openbravo.pos.forms.JPanelView;
-import com.openbravo.pos.forms.AppView;
-import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.data.loader.Vectorer;
 import com.openbravo.basic.BasicException;
-import com.openbravo.data.gui.JSaver;
-import com.openbravo.data.gui.MessageInf;
-import com.openbravo.data.gui.JCounter;
-import com.openbravo.data.gui.JLabelDirty;
-import com.openbravo.data.gui.JListNavigator;
-import com.openbravo.data.gui.JNavigator;
+import com.openbravo.data.gui.*;
 import com.openbravo.data.loader.ComparatorCreator;
-import com.openbravo.data.user.BrowsableEditableData;
-import com.openbravo.data.user.DirtyManager;
-import com.openbravo.data.user.EditorRecord;
-import com.openbravo.data.user.ListProvider;
-import com.openbravo.data.user.SaveProvider;
-import com.openbravo.pos.forms.BeanFactoryApp;
-import com.openbravo.pos.forms.BeanFactoryException;
+import com.openbravo.data.loader.Vectorer;
+import com.openbravo.data.user.*;
+import com.openbravo.pos.customers.CustomerInfoGlobal;
+import com.openbravo.pos.forms.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
 
 /**
  *
@@ -47,8 +38,19 @@ import com.openbravo.pos.forms.BeanFactoryException;
  */
 public abstract class JPanelTable extends JPanel implements JPanelView, BeanFactoryApp {
     
+    /**
+     *
+     */
     protected BrowsableEditableData bd;    
+
+    /**
+     *
+     */
     protected DirtyManager dirty;    
+
+    /**
+     *
+     */
     protected AppView app;
     
     /** Creates new form JPanelTableEditor */
@@ -57,6 +59,12 @@ public abstract class JPanelTable extends JPanel implements JPanelView, BeanFact
         initComponents();
     }
     
+    /**
+     *
+     * @param app
+     * @throws BeanFactoryException
+     */
+    @Override
     public void init(AppView app) throws BeanFactoryException {
         
         this.app = app;
@@ -66,10 +74,18 @@ public abstract class JPanelTable extends JPanel implements JPanelView, BeanFact
         init();
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public Object getBean() {
         return this;
     }
     
+    /**
+     *
+     */
     protected void startNavigation() {
         
         if (bd == null) {
@@ -96,7 +112,9 @@ public abstract class JPanelTable extends JPanel implements JPanelView, BeanFact
             if (cr != null) {
                 JListNavigator nl = new JListNavigator(bd);
                 nl.applyComponentOrientation(getComponentOrientation());
-                if (cr != null) nl.setCellRenderer(cr);
+                if (cr != null) {
+                    nl.setCellRenderer(cr);
+                }
                 container.add(nl, java.awt.BorderLayout.LINE_START);
             }
 
@@ -123,43 +141,99 @@ public abstract class JPanelTable extends JPanel implements JPanelView, BeanFact
         }
     }
     
+    /**
+     *
+     * @return
+     */
     public Component getToolbarExtras() {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public Component getFilter() {    
         return null;
     }
     
+    /**
+     *
+     */
     protected abstract void init();
     
+    /**
+     *
+     * @return
+     */
     public abstract EditorRecord getEditor();
     
+    /**
+     *
+     * @return
+     */
     public abstract ListProvider getListProvider();
     
+    /**
+     *
+     * @return
+     */
     public abstract SaveProvider getSaveProvider();
     
+    /**
+     *
+     * @return
+     */
     public Vectorer getVectorer() {
         return null;
     }
     
+    /**
+     *
+     * @return
+     */
     public ComparatorCreator getComparatorCreator() {
         return null;
     }
     
+    /**
+     *
+     * @return
+     */
     public ListCellRenderer getListCellRenderer() {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public JComponent getComponent() {
         return this;
     }
 
+    /**
+     *
+     * @throws BasicException
+     */
+    @Override
     public void activate() throws BasicException {
         startNavigation();
         bd.actionLoad();
+        
+        //HS insert new customer 20.03.2014
+        if (CustomerInfoGlobal.getInstance()!=null){
+            bd.actionInsert();
     }    
     
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public boolean deactivate() {
 
         try {
@@ -185,6 +259,7 @@ public abstract class JPanelTable extends JPanel implements JPanelView, BeanFact
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setLayout(new java.awt.BorderLayout());
 
+        container.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         container.setLayout(new java.awt.BorderLayout());
         container.add(toolbar, java.awt.BorderLayout.NORTH);
 

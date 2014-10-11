@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.reports;
 
@@ -24,10 +24,10 @@ import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.QBFCompareEnum;
 import com.openbravo.data.loader.SerializerWrite;
 import com.openbravo.data.loader.SerializerWriteBasic;
+import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.JCustomerFinder;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.pos.forms.AppView;
 import java.awt.Component;
 import javax.swing.event.DocumentEvent;
@@ -48,36 +48,65 @@ public class JParamsCustomer extends javax.swing.JPanel implements ReportEditorC
         initComponents();
         
         jTextField1.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
             public void insertUpdate(DocumentEvent e) {
                 currentcustomer = null;
             }
+            @Override
             public void removeUpdate(DocumentEvent e) {
                 currentcustomer = null;
             }
+            @Override
             public void changedUpdate(DocumentEvent e) {
                 currentcustomer = null;
             }
         });
     }
 
+    /**
+     *
+     * @param app
+     */
+    @Override
     public void init(AppView app) {
         dlCustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
     }
     
+    /**
+     *
+     * @throws BasicException
+     */
+    @Override
     public void activate() throws BasicException {
         
         currentcustomer = null;
         jTextField1.setText(null);        
     }
             
+    /**
+     *
+     * @return
+     */
+    @Override
     public SerializerWrite getSerializerWrite() {
         return new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING});
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public Component getComponent() {
         return this;
     }
     
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public Object createValue() throws BasicException {
         
         if (currentcustomer == null) {
@@ -107,20 +136,24 @@ public class JParamsCustomer extends javax.swing.JPanel implements ReportEditorC
         setPreferredSize(new java.awt.Dimension(400, 60));
         setLayout(null);
 
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel1.setText(AppLocal.getIntString("label.customer")); // NOI18N
         add(jLabel1);
-        jLabel1.setBounds(20, 20, 120, 15);
-        add(jTextField1);
-        jTextField1.setBounds(140, 20, 200, 20);
+        jLabel1.setBounds(20, 20, 120, 25);
 
-        btnCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png"))); // NOI18N
+        jTextField1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        add(jTextField1);
+        jTextField1.setBounds(140, 20, 200, 25);
+
+        btnCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/customer_sml.png"))); // NOI18N
+        btnCustomer.setToolTipText("Get Customers");
         btnCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCustomerActionPerformed(evt);
             }
         });
         add(btnCustomer);
-        btnCustomer.setBounds(350, 20, 50, 26);
+        btnCustomer.setBounds(350, 10, 57, 40);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed

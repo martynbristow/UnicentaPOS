@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.beans;
 
@@ -28,28 +28,61 @@ import javax.swing.JViewport;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class JFlowPanel extends JPanel implements Scrollable {
     
     private int hgap = 5;
     private int vgap  = 5;
     
+    /**
+     *
+     */
     public JFlowPanel() {
         this(5, 5);
     }
+
+    /**
+     *
+     * @param hgap
+     * @param vgap
+     */
     public JFlowPanel(int hgap, int vgap) {
         this.hgap = hgap;
         this.vgap = vgap;
     }
     
+    /**
+     *
+     * @param iValue
+     */
     public void setHorizontalGap(int iValue) {
         hgap = iValue;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getHorizontalGap() {
         return hgap;
     }
+
+    /**
+     *
+     * @param iValue
+     */
     public void setVerticalGap(int iValue) {
         vgap = iValue;
     }
+
+    /**
+     *
+     * @param iValue
+     * @return
+     */
     public int getVerticalGap(int iValue) {
         return vgap;
     }  
@@ -80,7 +113,9 @@ public class JFlowPanel extends JPanel implements Scrollable {
                     if (x == 0 || (x + hgap + d.width + hgap) <= maxWidth) {
                         // continuamos con esta linea
                         x += hgap;
-                        if (bDoChilds) m.setBounds(getPosition(x, maxWidth - d.width), dim.height, d.width, d.height);
+                        if (bDoChilds) {
+                            m.setBounds(getPosition(x, maxWidth - d.width), dim.height, d.width, d.height);
+                        }
                         x += d.width;
                         if (d.height > maxRowHeight) {
                             maxRowHeight = d.height;
@@ -88,7 +123,9 @@ public class JFlowPanel extends JPanel implements Scrollable {
                     } else {
                         // nueva linea
                         dim.height += maxRowHeight + vgap;
-                        if (bDoChilds) m.setBounds(getPosition(hgap, maxWidth - d.width), dim.height, d.width, d.height);
+                        if (bDoChilds) {
+                            m.setBounds(getPosition(hgap, maxWidth - d.width), dim.height, d.width, d.height);
+                        }
                         if (x > maxRowWidth) {
                             maxRowWidth = x;
                         }

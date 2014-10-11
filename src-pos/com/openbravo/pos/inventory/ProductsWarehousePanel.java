@@ -1,35 +1,26 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.inventory;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import com.openbravo.basic.BasicException;
-import com.openbravo.data.loader.DataRead;
-import com.openbravo.data.loader.Datas;
-import com.openbravo.data.loader.PreparedSentence;
-import com.openbravo.data.loader.SentenceExec;
-import com.openbravo.data.loader.SentenceExecTransaction;
-import com.openbravo.data.loader.SerializerRead;
-import com.openbravo.data.loader.SerializerWriteBasicExt;
+import com.openbravo.data.loader.*;
 import com.openbravo.data.model.Field;
 import com.openbravo.data.model.Row;
 import com.openbravo.data.user.EditorRecord;
@@ -39,6 +30,9 @@ import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.panels.JPanelTable2;
 import com.openbravo.pos.reports.JParamsLocation;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.UUID;
 
 /**
@@ -54,6 +48,10 @@ public class ProductsWarehousePanel extends JPanelTable2 {
     public ProductsWarehousePanel() {
     }
 
+    /**
+     *
+     */
+    @Override
     protected void init() {   
                
         m_paramslocation =  new JParamsLocation();
@@ -85,6 +83,7 @@ public class ProductsWarehousePanel extends JPanelTable2 {
         
         
         SentenceExec updatesent =  new SentenceExecTransaction(app.getSession()) {
+            @Override
             public int execInTransaction(Object params) throws BasicException {
                 Object[] values = (Object[]) params;
                 if (values[0] == null)  {
@@ -107,28 +106,46 @@ public class ProductsWarehousePanel extends JPanelTable2 {
         jeditor = new ProductsWarehouseEditor(dirty);   
     }
 
-       
+    /**
+     *
+     * @return
+     */
     @Override
     public Component getFilter() {
         return m_paramslocation.getComponent();
-    }  
-    
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public EditorRecord getEditor() {
         return jeditor;
-    }  
-    
+    }
+
+    /**
+     *
+     * @throws BasicException
+     */
     @Override
     public void activate() throws BasicException {
         
         m_paramslocation.activate(); 
         super.activate();
-    }     
-    
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public String getTitle() {
         return AppLocal.getIntString("Menu.ProductsWarehouse");
     }      
     
     private class ReloadActionListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 ProductsWarehousePanel.this.bd.actionLoad();
@@ -138,6 +155,7 @@ public class ProductsWarehousePanel extends JPanelTable2 {
     }
 
     private class WarehouseSerializerRead implements SerializerRead {
+        @Override
         public Object readValues(DataRead dr) throws BasicException {
             return new Object[] {
                 dr.getString(1),

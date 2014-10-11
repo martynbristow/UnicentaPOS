@@ -1,39 +1,43 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2008-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.inventory;
 
+import com.openbravo.basic.BasicException;
+import com.openbravo.data.user.DirtyManager;
+import com.openbravo.data.user.EditorRecord;
+import com.openbravo.format.Formats;
+import com.openbravo.pos.forms.AppLocal;
 import java.awt.Component;
 import java.util.UUID;
-import javax.swing.*;
+import javax.swing.JPanel;
 
-import com.openbravo.format.Formats;
-import com.openbravo.basic.BasicException;
-import com.openbravo.data.user.EditorRecord;
-import com.openbravo.data.user.DirtyManager;
-import com.openbravo.pos.forms.AppLocal;
-
-public class TaxCategoriesEditor extends JPanel implements EditorRecord {
+/**
+ *
+ * @author JG uniCenta
+ */
+public final class TaxCategoriesEditor extends JPanel implements EditorRecord {
     
     private Object m_oId;
     
-    /** Creates new form taxEditor */
+    /** Creates new form taxEditor
+     * @param dirty */
     public TaxCategoriesEditor(DirtyManager dirty) {
         initComponents();
 
@@ -41,16 +45,32 @@ public class TaxCategoriesEditor extends JPanel implements EditorRecord {
         
         writeValueEOF();
     }
+
+    /**
+     *
+     */
+    @Override
     public void writeValueEOF() {
         m_oId = null;
         m_jName.setText(null);
         m_jName.setEnabled(false);
     }
+
+    /**
+     *
+     */
+    @Override
     public void writeValueInsert() {
         m_oId = UUID.randomUUID().toString();
         m_jName.setText(null);
         m_jName.setEnabled(true);
     }
+
+    /**
+     *
+     * @param value
+     */
+    @Override
     public void writeValueDelete(Object value) {
 
         Object[] taxcustcat = (Object[]) value;
@@ -58,6 +78,12 @@ public class TaxCategoriesEditor extends JPanel implements EditorRecord {
         m_jName.setText(Formats.STRING.formatValue(taxcustcat[1]));
         m_jName.setEnabled(false);
     }    
+
+    /**
+     *
+     * @param value
+     */
+    @Override
     public void writeValueEdit(Object value) {
 
         Object[] taxcustcat = (Object[]) value;
@@ -66,6 +92,12 @@ public class TaxCategoriesEditor extends JPanel implements EditorRecord {
         m_jName.setEnabled(true);
     }
 
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public Object createValue() throws BasicException {
         
         Object[] taxcustcat = new Object[2];
@@ -74,12 +106,21 @@ public class TaxCategoriesEditor extends JPanel implements EditorRecord {
         taxcustcat[1] = m_jName.getText();
 
         return taxcustcat;
-    }    
-     
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public Component getComponent() {
         return this;
     }
     
+    /**
+     *
+     */
+    @Override
     public void refresh() {
     }
     
@@ -95,7 +136,10 @@ public class TaxCategoriesEditor extends JPanel implements EditorRecord {
         jLabel2 = new javax.swing.JLabel();
         m_jName = new javax.swing.JTextField();
 
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel2.setText(AppLocal.getIntString("Label.Name")); // NOI18N
+
+        m_jName.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -113,8 +157,8 @@ public class TaxCategoriesEditor extends JPanel implements EditorRecord {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents

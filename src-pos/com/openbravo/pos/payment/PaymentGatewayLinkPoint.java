@@ -1,34 +1,28 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
 //    Copyright (C) 2008-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 package com.openbravo.pos.payment;
 
 import com.openbravo.data.loader.LocalRes;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppProperties;
 import com.openbravo.pos.util.AltEncrypter;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -36,8 +30,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
@@ -67,6 +59,10 @@ public class PaymentGatewayLinkPoint implements PaymentGateway {
     private boolean m_bTestMode;
     private static String APPROVED = "APPROVED";
 
+    /**
+     *
+     * @param props
+     */
     public PaymentGatewayLinkPoint(AppProperties props) {
 
         
@@ -81,10 +77,17 @@ public class PaymentGatewayLinkPoint implements PaymentGateway {
                 : "secure.linkpt.net";
     }
     
+    /**
+     *
+     */
     public PaymentGatewayLinkPoint() {
         
     }
 
+    /**
+     *
+     * @param payinfo
+     */
     @Override
     public void execute(PaymentInfoMagcard payinfo) {
         String sReturned="";
@@ -93,9 +96,9 @@ public class PaymentGatewayLinkPoint implements PaymentGateway {
         System.setProperty("javax.net.ssl.keyStore", sClientCertPath);
         System.setProperty("javax.net.ssl.keyStorePassword", sPasswordCert);
         System.setProperty("javax.net.ssl.keyStoreType", "PKCS12");        
-        
-        
-        
+
+
+
         try {
             url = new URL("https://"+HOST+":"+PORT);
             HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
@@ -137,7 +140,7 @@ public class PaymentGatewayLinkPoint implements PaymentGateway {
             }
         }
         else {
-            payinfo.paymentError(lpp.getResult(), "");
+            payinfo.paymentError(lpp.getResult(), "");        
         }
     }
     
@@ -169,9 +172,10 @@ public class PaymentGatewayLinkPoint implements PaymentGateway {
             
         if (payinfo.getTrack1(true) == null){
             moreInfo.append("<creditcard>");
-            moreInfo.append("<cardnumber>"+ payinfo.getCardNumber() +"</cardnumber> ");
-            moreInfo.append("<cardexpmonth>" + tmp.charAt(0) + "" + tmp.charAt(1) + "</cardexpmonth>");
-            moreInfo.append("<cardexpyear>" + tmp.charAt(2) + "" + tmp.charAt(3) + "</cardexpyear>");
+// JG 16 May 12 use chain of .append
+            moreInfo.append("<cardnumber>").append(payinfo.getCardNumber()).append("</cardnumber> ");
+                moreInfo.append("<cardexpmonth>").append(tmp.charAt(0)).append("").append(tmp.charAt(1)).append("</cardexpmonth>");
+                StringBuilder append = moreInfo.append("<cardexpyear>").append(tmp.charAt(2)).append("").append(tmp.charAt(3)).append("</cardexpyear>");
             moreInfo.append("</creditcard>");
             
         } else {
@@ -186,9 +190,10 @@ public class PaymentGatewayLinkPoint implements PaymentGateway {
         
         //Construct the order
         xml.append("<order>");
-        xml.append("<merchantinfo><configfile>"+ sConfigfile +"</configfile></merchantinfo>");
-        xml.append("<orderoptions><ordertype>"+ sTransactionType +"</ordertype><result>LIVE</result></orderoptions>");
-        xml.append("<payment><chargetotal>"+ URLEncoder.encode(amount.replace(',', '.'), "UTF-8") +"</chargetotal></payment>");
+// JG 16 May 12 use chain of .append
+            xml.append("<merchantinfo><configfile>").append(sConfigfile).append("</configfile></merchantinfo>");
+            xml.append("<orderoptions><ordertype>").append(sTransactionType).append("</ordertype><result>TEST</result></orderoptions>");
+            xml.append("<payment><chargetotal>").append(URLEncoder.encode(amount.replace(',', '.'), "UTF-8")).append("</chargetotal></payment>");
         xml.append(moreInfo);
         xml.append("<transactiondetails>");
         xml.append(refundLine);
@@ -206,9 +211,9 @@ public class PaymentGatewayLinkPoint implements PaymentGateway {
     private class LinkPointParser extends DefaultHandler {
     
     private SAXParser m_sp = null;
-    private Map props = new HashMap();
+    private final Map props = new HashMap();
     private String text;
-    private InputStream is;
+    private final InputStream is;
     private String result;
     
     public LinkPointParser(String in) {
@@ -237,43 +242,57 @@ public class PaymentGatewayLinkPoint implements PaymentGateway {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         try {
-            if (qName.equals("r_csp")) {
-                props.put("r_csp", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            } else if (qName.equals("r_time")){
-                props.put("r_time", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            } else if (qName.equals("r_ref")) {
-                props.put("r_ref", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            } else if (qName.equals("r_error")) {
-                props.put("r_error", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            } else if (qName.equals("r_ordernum")) {
-                props.put("r_ordernum", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            } else if (qName.equals("r_message")) {
-                props.put("r_message", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            } else if (qName.equals("r_code")) {
-                props.put("r_code", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            } else if (qName.equals("r_tdate")) {
-                props.put("r_tdate", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            } else if (qName.equals("r_score")) {
-                props.put("r_score", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            } else if (qName.equals("r_authresponse")) {
-                props.put("r_authresponse", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            } else if (qName.equals("r_approved")) {
-                props.put("r_approved", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            } else if (qName.equals("r_avs")) {
-                props.put("r_avs", URLDecoder.decode(text, "UTF-8"));
-                text="";
-            }
+// JG 16 May 12 use switch
+            switch (qName) {
+                    case "r_csp":
+                        props.put("r_csp", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                    case "r_time":
+                        props.put("r_time", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                    case "r_ref":
+                        props.put("r_ref", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                    case "r_error":
+                        props.put("r_error", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                    case "r_ordernum":
+                        props.put("r_ordernum", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                    case "r_message":
+                        props.put("r_message", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                    case "r_code":
+                        props.put("r_code", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                    case "r_tdate":
+                        props.put("r_tdate", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                    case "r_score":
+                        props.put("r_score", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                    case "r_authresponse":
+                        props.put("r_authresponse", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                    case "r_approved":
+                        props.put("r_approved", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                    case "r_avs":
+                        props.put("r_avs", URLDecoder.decode(text, "UTF-8"));
+                        text="";
+                        break;
+                }
         }
         catch(UnsupportedEncodingException eUE){
             result = eUE.getMessage();

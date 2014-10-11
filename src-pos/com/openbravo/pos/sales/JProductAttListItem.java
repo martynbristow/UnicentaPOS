@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2008-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.sales;
 
@@ -32,7 +32,11 @@ public class JProductAttListItem extends javax.swing.JPanel implements JProductA
     private String attid;
     private ComboBoxValModel model;
 
-    /** Creates new form JProductAttListItem */
+    /** Creates new form JProductAttListItem
+     * @param attid
+     * @param label
+     * @param value
+     * @param values */
     public JProductAttListItem(String attid, String label, String value, List<String> values) {
 
         this.attid = attid;
@@ -47,6 +51,9 @@ public class JProductAttListItem extends javax.swing.JPanel implements JProductA
         jValues.setSelectedItem(value);
     }
 
+    /**
+     *
+     */
     public void assignSelection() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -55,14 +62,26 @@ public class JProductAttListItem extends javax.swing.JPanel implements JProductA
         });
     }
 
+    /**
+     *
+     * @return
+     */
     public String getAttribute() {
         return attid;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getValue() {
         return (String) jValues.getSelectedItem();
     }
 
+    /**
+     *
+     * @return
+     */
     public Component getComponent() {
         return this;
     }
@@ -79,7 +98,10 @@ public class JProductAttListItem extends javax.swing.JPanel implements JProductA
         jLabel1 = new javax.swing.JLabel();
         jValues = new javax.swing.JComboBox();
 
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel1.setText("jLabel1");
+
+        jValues.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -95,10 +117,10 @@ public class JProductAttListItem extends javax.swing.JPanel implements JProductA
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jValues, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jValues, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 

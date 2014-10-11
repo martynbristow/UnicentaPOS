@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.beans;
 
@@ -23,17 +23,30 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class DateUtils {
     
     /** Creates a new instance of DateUtils */
     private DateUtils() {
     }
     
+    /**
+     *
+     * @return
+     */
     public static Date getToday() { 
         // el dia de hoy sin horas ni nada.        
         return getToday(new Date());     
     }
     
+    /**
+     *
+     * @param d
+     * @return
+     */
     public static Date getToday(Date d) { 
         // el dia de hoy sin horas ni nada.        
         GregorianCalendar ddate = new GregorianCalendar();
@@ -42,11 +55,20 @@ public class DateUtils {
         return ddateday.getTime();        
     }
     
+    /**
+     *
+     * @return
+     */
     public static Date getTodayMinutes() { 
         // el dia de hoy sin horas ni nada.        
         return getTodayMinutes(new Date());     
     }
     
+    /**
+     *
+     * @param d
+     * @return
+     */
     public static Date getTodayMinutes(Date d) { 
         // el dia de hoy sin horas ni nada.        
         GregorianCalendar ddate = new GregorianCalendar();
@@ -56,6 +78,11 @@ public class DateUtils {
         return ddateday.getTime();        
     }
     
+    /**
+     *
+     * @param d
+     * @return
+     */
     public static Date getTodayHours(Date d) {
         // el dia ajustado a las horeas     
         Calendar ddate = Calendar.getInstance();
@@ -69,6 +96,12 @@ public class DateUtils {
         return dNow.getTime();        
     }
     
+    /**
+     *
+     * @param day
+     * @param hour
+     * @return
+     */
     public static Date getDate(Date day, Date hour) {
         
         // Calculamos el dia actual con la hora escogida.
@@ -84,5 +117,5 @@ public class DateUtils {
         
         return dNow.getTime();
     }
- 
+
 }

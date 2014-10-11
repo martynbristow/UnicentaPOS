@@ -1,24 +1,25 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.data.gui;
 
+import com.openbravo.data.loader.LocalRes;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -37,8 +38,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
-import com.openbravo.data.loader.LocalRes;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class JImageEditor extends javax.swing.JPanel {
     
     private Dimension m_maxsize;
@@ -60,13 +64,23 @@ public class JImageEditor extends javax.swing.JPanel {
         privateSetEnabled(isEnabled());
     }
     
+    /**
+     *
+     * @param size
+     */
     public void setMaxDimensions(Dimension size) {
         m_maxsize = size;
     }
+
+    /**
+     *
+     * @return
+     */
     public Dimension getMaxDimensions() {
         return m_maxsize;
     }
     
+    @Override
     public void setEnabled(boolean value) {
 
         privateSetEnabled(value);
@@ -82,6 +96,10 @@ public class JImageEditor extends javax.swing.JPanel {
         m_jScr.setEnabled(value && (m_Img != null));
     }
     
+    /**
+     *
+     * @param img
+     */
     public void setImage(BufferedImage img) {
         BufferedImage oldimg = m_Img;
         m_Img = img;
@@ -98,14 +116,26 @@ public class JImageEditor extends javax.swing.JPanel {
         firePropertyChange("image", oldimg, m_Img);
     }
     
+    /**
+     *
+     * @return
+     */
     public BufferedImage getImage() {
         return m_Img;
-    }    
-    
+    }
+
+    /**
+     *
+     * @return
+     */
     public double getZoom() {
         return m_icon.getZoom();
     }
  
+    /**
+     *
+     * @param zoom
+     */
     public void setZoom(double zoom) {
         double oldzoom = m_icon.getZoom();
         m_icon.setZoom(zoom);
@@ -119,16 +149,25 @@ public class JImageEditor extends javax.swing.JPanel {
         firePropertyChange("zoom", oldzoom, zoom);
     }
     
+    /**
+     *
+     */
     public void incZoom() {        
         double zoom = m_icon.getZoom();
         setZoom(zoom > 4.0 ? 8.0 : zoom * 2.0);
     }
     
+    /**
+     *
+     */
     public void decZoom() {        
         double zoom = m_icon.getZoom();
         setZoom(zoom < 0.5 ? 0.25 : zoom / 2.0);
     }
     
+    /**
+     *
+     */
     public void doLoad() {
         JFileChooser fc = new JFileChooser(m_fCurrentDirectory);
         
@@ -201,12 +240,15 @@ public class JImageEditor extends javax.swing.JPanel {
             this.ico = null;
             this.zoom = 1.0;
         }
+        @Override
         public int getIconHeight() {
             return ico == null ? 0 : (int) (zoom * ico.getIconHeight());
         }
+        @Override
         public int getIconWidth() {
             return ico == null ? 0 : (int) (zoom * ico.getIconWidth());
         }
+        @Override
         public void paintIcon(Component c, Graphics g, int x, int y) {
             if (ico != null) {
                 Graphics2D g2d = (Graphics2D) g;
@@ -239,6 +281,7 @@ public class JImageEditor extends javax.swing.JPanel {
             this.extensions = extensions;            
         }
         
+        @Override
         public boolean accept(java.io.File f) {
             if (f.isDirectory()) {
                 return true;
@@ -257,6 +300,7 @@ public class JImageEditor extends javax.swing.JPanel {
             }   
         }
         
+        @Override
         public String getDescription() {
             return message;
         }      
@@ -283,6 +327,7 @@ public class JImageEditor extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
         m_jImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        m_jImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/no_photo.png"))); // NOI18N
         m_jImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         m_jScr.setViewportView(m_jImage);
 
@@ -293,7 +338,8 @@ public class JImageEditor extends javax.swing.JPanel {
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
         jPanel2.setLayout(new java.awt.GridLayout(0, 1, 0, 5));
 
-        m_jbtnopen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileopen.png"))); // NOI18N
+        m_jbtnopen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/camera.png"))); // NOI18N
+        m_jbtnopen.setToolTipText("Open Folder");
         m_jbtnopen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jbtnopenActionPerformed(evt);
@@ -302,6 +348,7 @@ public class JImageEditor extends javax.swing.JPanel {
         jPanel2.add(m_jbtnopen);
 
         m_jbtnclose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileclose.png"))); // NOI18N
+        m_jbtnclose.setToolTipText("Remove Picture");
         m_jbtnclose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jbtncloseActionPerformed(evt);
@@ -310,6 +357,7 @@ public class JImageEditor extends javax.swing.JPanel {
         jPanel2.add(m_jbtnclose);
 
         m_jbtnzoomin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/viewmag+.png"))); // NOI18N
+        m_jbtnzoomin.setToolTipText("Zoom In");
         m_jbtnzoomin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jbtnzoominActionPerformed(evt);
@@ -317,13 +365,13 @@ public class JImageEditor extends javax.swing.JPanel {
         });
         jPanel2.add(m_jbtnzoomin);
 
-        m_jPercent.setBackground(java.awt.Color.white);
         m_jPercent.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         m_jPercent.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jPercent.setOpaque(true);
         jPanel2.add(m_jPercent);
 
         m_jbtnzoomout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/viewmag-.png"))); // NOI18N
+        m_jbtnzoomout.setToolTipText("Zoom Out");
         m_jbtnzoomout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jbtnzoomoutActionPerformed(evt);

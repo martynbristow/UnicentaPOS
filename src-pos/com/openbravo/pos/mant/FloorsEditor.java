@@ -1,45 +1,46 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.mant;
 
+import com.openbravo.basic.BasicException;
+import com.openbravo.data.user.DirtyManager;
+import com.openbravo.data.user.EditorRecord;
+import com.openbravo.format.Formats;
+import com.openbravo.pos.forms.AppLocal;
 import java.awt.Component;
 import java.awt.image.BufferedImage;
 import java.util.UUID;
-import javax.swing.*;
-import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.format.Formats;
-import com.openbravo.basic.BasicException;
-import com.openbravo.data.user.EditorRecord;
-import com.openbravo.data.user.DirtyManager;
+import javax.swing.JPanel;
 
 
 /**
  *
  * @author adrianromero
  */
-public class FloorsEditor extends JPanel implements EditorRecord {
+public final class FloorsEditor extends JPanel implements EditorRecord {
     
 //    private DirtyManager m_Dirty = new DirtyManager();    
     private String m_sID;
     
-    /** Creates new form FloorsEditor */
+    /** Creates new form FloorsEditor
+     * @param dirty */
     public FloorsEditor(DirtyManager dirty) {
         initComponents();
          
@@ -49,6 +50,10 @@ public class FloorsEditor extends JPanel implements EditorRecord {
         writeValueEOF();
     }
 
+    /**
+     *
+     */
+    @Override
     public void writeValueEOF() {
         
         m_sID = null;
@@ -58,6 +63,11 @@ public class FloorsEditor extends JPanel implements EditorRecord {
         m_jName.setEnabled(false);
         m_jImage.setEnabled(false);
     }  
+
+    /**
+     *
+     */
+    @Override
     public void writeValueInsert() {
         
         m_sID = UUID.randomUUID().toString(); 
@@ -67,6 +77,12 @@ public class FloorsEditor extends JPanel implements EditorRecord {
         m_jName.setEnabled(true);
         m_jImage.setEnabled(true);
     }
+
+    /**
+     *
+     * @param value
+     */
+    @Override
     public void writeValueDelete(Object value) {
         
         Object[] floor = (Object[]) value;
@@ -77,6 +93,12 @@ public class FloorsEditor extends JPanel implements EditorRecord {
         m_jName.setEnabled(false);
         m_jImage.setEnabled(false);
     }    
+
+    /**
+     *
+     * @param value
+     */
+    @Override
     public void writeValueEdit(Object value) {
         
         Object[] floor = (Object[]) value;
@@ -88,6 +110,12 @@ public class FloorsEditor extends JPanel implements EditorRecord {
         m_jImage.setEnabled(true);
     }
 
+    /**
+     *
+     * @return
+     * @throws BasicException
+     */
+    @Override
     public Object createValue() throws BasicException {
         
         Object[] floor = new Object[3];
@@ -96,12 +124,21 @@ public class FloorsEditor extends JPanel implements EditorRecord {
         floor[1] = m_jName.getText();
         floor[2] = m_jImage.getImage();
         return floor;
-    }    
-    
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
     public Component getComponent() {
         return this;
     }
     
+    /**
+     *
+     */
+    @Override
     public void refresh() {
     }
     
@@ -120,21 +157,27 @@ public class FloorsEditor extends JPanel implements EditorRecord {
         jPanel3 = new javax.swing.JPanel();
         m_jImage = new com.openbravo.data.gui.JImageEditor();
 
+        setMinimumSize(new java.awt.Dimension(91, 125));
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setPreferredSize(new java.awt.Dimension(150, 100));
         jPanel1.setLayout(null);
 
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel3.setText(AppLocal.getIntString("Label.Name")); // NOI18N
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(20, 20, 90, 20);
+        jLabel3.setBounds(20, 20, 90, 25);
+
+        m_jName.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanel1.add(m_jName);
-        m_jName.setBounds(110, 20, 180, 18);
+        m_jName.setBounds(110, 20, 180, 25);
 
         add(jPanel1, java.awt.BorderLayout.NORTH);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
         jPanel3.setLayout(new java.awt.BorderLayout());
+
+        m_jImage.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanel3.add(m_jImage, java.awt.BorderLayout.CENTER);
 
         add(jPanel3, java.awt.BorderLayout.CENTER);

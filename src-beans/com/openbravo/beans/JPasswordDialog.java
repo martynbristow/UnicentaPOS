@@ -1,28 +1,31 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.beans;
 
 import java.awt.*;
 import javax.swing.*;
-import java.util.*;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class JPasswordDialog extends javax.swing.JDialog {
     
     // private static ResourceBundle m_Intl;
@@ -30,12 +33,16 @@ public class JPasswordDialog extends javax.swing.JDialog {
 
     private String m_sPassword;
         
-    /** Creates new form JCalendarDialog */
+    /** Creates new form JCalendarDialog
+     * @param parent
+     * @param modal */
     public JPasswordDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);            
         init();
     }
-    /** Creates new form JCalendarDialog */
+    /** Creates new form JCalendarDialog
+     * @param parent
+     * @param modal */
     public JPasswordDialog(java.awt.Dialog parent, boolean modal) {
         super(parent, modal);            
         init();
@@ -74,14 +81,37 @@ public class JPasswordDialog extends javax.swing.JDialog {
         } else {
             return getWindow(parent.getParent());
         }
-    }    
-    
+    }
+
+    /**
+     *
+     * @param parent
+     * @param title
+     * @return
+     */
     public static String showEditPassword(Component parent, String title) {
         return showEditPassword(parent, title, null, null);
     }
+
+    /**
+     *
+     * @param parent
+     * @param title
+     * @param message
+     * @return
+     */
     public static String showEditPassword(Component parent, String title, String message) {
         return showEditPassword(parent, title, message, null);
     }
+
+    /**
+     *
+     * @param parent
+     * @param title
+     * @param message
+     * @param icon
+     * @return
+     */
     public static String showEditPassword(Component parent, String title, String message, Icon icon) {
         
         Window window = getWindow(parent);      
@@ -127,7 +157,8 @@ public class JPasswordDialog extends javax.swing.JDialog {
 
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jcmdOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/button_ok.png"))); // NOI18N
+        jcmdOK.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jcmdOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/ok.png"))); // NOI18N
         jcmdOK.setText(m_resources.getString("button.ok")); // NOI18N
         jcmdOK.setMargin(new java.awt.Insets(8, 16, 8, 16));
         jcmdOK.addActionListener(new java.awt.event.ActionListener() {
@@ -137,7 +168,8 @@ public class JPasswordDialog extends javax.swing.JDialog {
         });
         jPanel1.add(jcmdOK);
 
-        jcmdCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/button_cancel.png"))); // NOI18N
+        jcmdCancel.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jcmdCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/cancel.png"))); // NOI18N
         jcmdCancel.setText(m_resources.getString("button.cancel")); // NOI18N
         jcmdCancel.setMargin(new java.awt.Insets(8, 16, 8, 16));
         jcmdCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -153,10 +185,18 @@ public class JPasswordDialog extends javax.swing.JDialog {
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
+
+        m_jKeys.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jKeysActionPerformed(evt);
+            }
+        });
         jPanel3.add(m_jKeys);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jPanel4.setLayout(new java.awt.BorderLayout());
+
+        m_jpassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanel4.add(m_jpassword, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel4);
@@ -203,6 +243,9 @@ public class JPasswordDialog extends javax.swing.JDialog {
         dispose();
         
     }//GEN-LAST:event_closeWindow
+
+    private void m_jKeysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jKeysActionPerformed
+    }//GEN-LAST:event_m_jKeysActionPerformed
        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;

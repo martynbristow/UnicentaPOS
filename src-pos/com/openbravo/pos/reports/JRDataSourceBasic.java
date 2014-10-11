@@ -1,34 +1,36 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.reports;
 
-import com.openbravo.pos.forms.AppLocal;
-
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRField;
-import net.sf.jasperreports.engine.JRException;
-
-import com.openbravo.data.loader.BaseSentence;
 import com.openbravo.basic.BasicException;
+import com.openbravo.data.loader.BaseSentence;
 import com.openbravo.data.loader.DataResultSet;
+import com.openbravo.pos.forms.AppLocal;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
 
+/**
+ *
+ * @author JG uniCenta
+ */
 public class JRDataSourceBasic implements JRDataSource {
     
     private BaseSentence sent;
@@ -37,7 +39,11 @@ public class JRDataSourceBasic implements JRDataSource {
     
     private ReportFields m_fields = null;
     
-    /** Creates a new instance of JRDataSourceBasic */
+    /** Creates a new instance of JRDataSourceBasic
+     * @param sent
+     * @param fields
+     * @param params
+     * @throws com.openbravo.basic.BasicException */
     public JRDataSourceBasic(BaseSentence sent, ReportFields fields, Object params) throws BasicException  {   
         
         this.sent = sent;
@@ -45,6 +51,13 @@ public class JRDataSourceBasic implements JRDataSource {
         m_fields = fields;
     }
     
+    /**
+     *
+     * @param jrField
+     * @return
+     * @throws JRException
+     */
+    @Override
     public Object getFieldValue(JRField jrField) throws JRException {
         
         try {
@@ -54,6 +67,12 @@ public class JRDataSourceBasic implements JRDataSource {
         }
     }
     
+    /**
+     *
+     * @return
+     * @throws JRException
+     */
+    @Override
     public boolean next() throws JRException {
         
         if (SRS == null) {

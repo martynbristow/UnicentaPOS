@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2008-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.data.model;
 
@@ -28,21 +28,38 @@ public class Table {
     private String name;
     private Column[] columns;
     
+    /**
+     *
+     * @param name
+     * @param columns
+     */
     public Table(String name, Column... columns) {
         this.name = name;
         this.columns = columns;
     }
     
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
     
+    /**
+     *
+     * @return
+     */
     public Column[] getColumns() {
         return columns;
     }
     
+    /**
+     *
+     * @return
+     */
     public String getListSQL() {
-        StringBuffer sent = new StringBuffer();
+        StringBuilder sent = new StringBuilder();
         sent.append("select ");
 
         for (int i = 0; i < columns.length; i ++) {
@@ -56,12 +73,16 @@ public class Table {
         sent.append(name);
         
         return sent.toString();          
-    }   
-    
+    }
+
+    /**
+     *
+     * @return
+     */
     public String getInsertSQL() {
         
-        StringBuffer sent = new StringBuffer();
-        StringBuffer values = new StringBuffer();
+        StringBuilder sent = new StringBuilder();
+        StringBuilder values = new StringBuilder();
         
         sent.append("insert into ");
         sent.append(name);
@@ -81,12 +102,16 @@ public class Table {
         sent.append(")");
 
         return sent.toString();       
-    }    
-    
+    }
+
+    /**
+     *
+     * @return
+     */
     public String getUpdateSQL() {
         
-        StringBuffer values = new StringBuffer();
-        StringBuffer filter = new StringBuffer();
+        StringBuilder values = new StringBuilder();
+        StringBuilder filter = new StringBuilder();
         
         for (int i = 0; i < columns.length; i ++) {
             if (columns[i].isPK()) {
@@ -107,11 +132,15 @@ public class Table {
         }
         
         return "update " + name + " set " + values + filter;             
-    }   
-    
+    }
+
+    /**
+     *
+     * @return
+     */
     public String getDeleteSQL() {
         
-        StringBuffer filter = new StringBuffer();
+        StringBuilder filter = new StringBuilder();
 
         for (int i = 0; i < columns.length; i ++) {
             if (columns[i].isPK()) {

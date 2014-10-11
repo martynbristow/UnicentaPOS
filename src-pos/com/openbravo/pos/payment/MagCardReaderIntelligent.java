@@ -1,49 +1,185 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.payment;
 
-public class MagCardReaderIntelligent implements MagCardReader {
-
-    private MagCardParser magcardparser;
+/**
+ *
+ * @author JG uniCenta
+ */
+public final class MagCardReaderIntelligent implements MagCardReader {
+    
+    private String m_sHolderName;
+    private String m_sCardNumber;
+    private String m_sExpirationDate;
+    
+    private StringBuilder m_sField;
+    
+    private static final int READING_HOLDER = 0;
+    private static final int READING_NUMBER = 1;
+    private static final int READING_DATE = 2;
+    private static final int READING_FINISHED = 3;
+    private int m_iAutomState;
             
     /** Creates a new instance of BasicMagCardReader */
     public MagCardReaderIntelligent() {
-        magcardparser = new MagCardParserIntelligent();
+        reset();
     }
  
+    /**
+     *
+     * @return
+     */
     @Override
     public String getReaderName() {
         return "Basic magnetic card reader";
     }
+    
+    /**
+     *
+     */
     @Override
-    public void keyPressed(java.awt.event.KeyEvent evt) {
+    public void reset() {
+        m_sHolderName = null;
+        m_sCardNumber = null;
+        m_sExpirationDate = null;
+        m_sField = new StringBuilder();
+        m_iAutomState = READING_HOLDER;
     }
+    
+    /**
+     *
+     * @param c
+     */
     @Override
-    public void keyReleased(java.awt.event.KeyEvent evt) {
+    public void appendChar(char c) {
+       
+        switch (m_iAutomState) {
+            case READING_HOLDER:
+            case READING_FINISHED:
+                if (c == 0x0009) {
+                    m_sHolderName = m_sField.toString();
+                    m_sField = new StringBuilder();
+                    m_iAutomState = READING_NUMBER;
+                } else if (c == 0x000A) {
+                    m_sHolderName = null;
+                    m_sCardNumber = null;
+                    m_sExpirationDate = null;
+                    m_sField = new StringBuilder();
+                    m_iAutomState = READING_HOLDER;
+                } else {
+                    m_sField.append(c);
+                    m_iAutomState = READING_HOLDER;
+                }
+                break;
+            case READING_NUMBER:
+                if (c == 0x0009) {
+                    m_sCardNumber = m_sField.toString();
+                    m_sField = new StringBuilder();
+                    m_iAutomState = READING_DATE;
+                } else if (c == 0x000A) {
+                    m_sHolderName = null;
+                    m_sCardNumber = null;
+                    m_sExpirationDate = null;
+                    m_sField = new StringBuilder();
+                    m_iAutomState = READING_HOLDER;
+                } else {
+                    m_sField.append(c);
+                }
+                break;                
+            case READING_DATE:
+                if (c == 0x0009) {
+                    m_sHolderName = m_sCardNumber;
+                    m_sCardNumber = m_sExpirationDate;
+                    m_sExpirationDate = null;
+                    m_sField = new StringBuilder();
+                } else if (c == 0x000A) {
+                    m_sExpirationDate = m_sField.toString();
+                    m_sField = new StringBuilder();
+                    m_iAutomState = READING_FINISHED;
+                } else {
+                    m_sField.append(c);
+                }
+                break;  
+        }
     }
+    
+    /**
+     *
+     * @return
+     */
     @Override
-    public void keyTyped(java.awt.event.KeyEvent evt) {
-        magcardparser.append(evt.getKeyChar());
+    public boolean isComplete() {
+        return m_iAutomState == READING_FINISHED;
     }
+    
+    /**
+     *
+     * @return
+     */
     @Override
-    public MagCardParser getMagCard() {
-        return magcardparser;
+    public String getHolderName() {
+        return m_sHolderName;
     }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String getCardNumber() {
+        return m_sCardNumber;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String getExpirationDate() {
+        return m_sExpirationDate;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String getTrack1() {
+        return null;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String getTrack2() {
+        return null;
+    }    
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String getTrack3() {
+        return null;
+    }       
 }

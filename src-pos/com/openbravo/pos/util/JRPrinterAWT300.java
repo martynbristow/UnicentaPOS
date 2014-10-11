@@ -27,10 +27,10 @@
  */
 
 //    Portions:
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
-//    author adrian romero
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta
+//    http://www.unicenta.com
+//    author Jack Gerrard
 // This class is a copy of net.sf.jasperreports.engine.print.JRPrinterAWT
 // The modifications are:
 // Added to the constructor the service, instead of isDialog
@@ -40,25 +40,17 @@
 package com.openbravo.pos.util;
 
 import java.awt.Graphics;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.print.Book;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
-
+import java.awt.print.*;
 import javax.print.PrintService;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JRReport;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRGraphics2DExporter;
 import net.sf.jasperreports.engine.export.JRGraphics2DExporterParameter;
 import net.sf.jasperreports.engine.util.JRGraphEnvInitializer;
-
-
 /**
  * @author Teodor Danciu (teodord@users.sourceforge.net)
  * @version $Id: JRPrinterAWT.java 2123 2008-03-12 11:00:41Z teodord $
@@ -76,6 +68,10 @@ public class JRPrinterAWT300 implements Printable
 
 	/**
 	 *
+     * @param jrPrint
+     * @param jrPrint
+     * @throws net.sf.jasperreports.engine.JRException
+     * @throws JRException
 	 */
 	protected JRPrinterAWT300(JasperPrint jrPrint) throws JRException
 	{
@@ -87,6 +83,15 @@ public class JRPrinterAWT300 implements Printable
 
 	/**
 	 *
+     * @param jrPrint
+     * @param firstPageIndex
+     * @param lastPageIndex
+     * @param firstPageIndex
+     * @param lastPageIndex
+     * @param service
+     * @return
+     * @return 
+     * @throws JRException
 	 */
 	public static boolean printPages(
 		JasperPrint jrPrint,
@@ -106,6 +111,14 @@ public class JRPrinterAWT300 implements Printable
 
 	/**
 	 *
+     * @param jrPrint
+     * @param pageIndex
+     * @param zoom
+     * @param jrPrint
+     * @param pageIndex
+     * @param zoom
+     * @return 
+     * @throws JRException 
 	 */
 	public static Image printPageToImage(
 		JasperPrint jrPrint,
@@ -155,9 +168,9 @@ public class JRPrinterAWT300 implements Printable
 
 		printJob.setJobName("JasperReports - " + jasperPrint.getName());
 		
-		switch (jasperPrint.getOrientation())
+		switch (jasperPrint.getOrientationValue())
 		{
-			case JRReport.ORIENTATION_LANDSCAPE :
+			case LANDSCAPE :
 			{
 				pageFormat.setOrientation(PageFormat.LANDSCAPE);
 				paper.setSize(jasperPrint.getPageHeight(), jasperPrint.getPageWidth());
@@ -169,7 +182,7 @@ public class JRPrinterAWT300 implements Printable
 					);
 				break;
 			}
-			case JRReport.ORIENTATION_PORTRAIT :
+			case PORTRAIT :
 			default :
 			{
 				pageFormat.setOrientation(PageFormat.PORTRAIT);
@@ -199,7 +212,7 @@ public class JRPrinterAWT300 implements Printable
                         printJob.print();
                     }
 		}
-		catch (Exception ex)
+		catch (HeadlessException | PrinterException ex)
 		{
 			throw new JRException("Error printing report.", ex);
 		}
@@ -211,6 +224,7 @@ public class JRPrinterAWT300 implements Printable
 	/**
 	 *
 	 */
+    @Override
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
 	{
 		if (Thread.currentThread().isInterrupted())
@@ -235,7 +249,6 @@ public class JRPrinterAWT300 implements Printable
 		}
 		catch (JRException e)
 		{
-			e.printStackTrace();
 			throw new PrinterException(e.getMessage());
 		}
 
@@ -279,9 +292,14 @@ public class JRPrinterAWT300 implements Printable
 		{
 		}
 	}
-	
-	
-	public static long getImageSize(JasperPrint jasperPrint, float zoom)
+
+    /**
+     *
+     * @param jasperPrint
+     * @param zoom
+     * @return
+     */
+    public static long getImageSize(JasperPrint jasperPrint, float zoom)
 	{
 		int width = (int) (jasperPrint.getPageWidth() * zoom) + 1;
 		int height = (int) (jasperPrint.getPageHeight() * zoom) + 1;

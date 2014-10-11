@@ -1,24 +1,27 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
+//    uniCenta oPOS  - Touch Friendly Point Of Sale
+//    Copyright (c) 2009-2014 uniCenta & previous Openbravo POS works
+//    http://www.unicenta.com
 //
-//    This file is part of Openbravo POS.
+//    This file is part of uniCenta oPOS
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    uniCenta oPOS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//   uniCenta oPOS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with uniCenta oPOS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.forms;
 
+import com.openbravo.basic.BasicException;
+import com.openbravo.data.loader.Session;
+import com.openbravo.pos.util.AltEncrypter;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,9 +29,6 @@ import java.net.URLClassLoader;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import com.openbravo.basic.BasicException;
-import com.openbravo.data.loader.Session;
-import com.openbravo.pos.util.AltEncrypter;
 
 /**
  *
@@ -40,6 +40,12 @@ public class AppViewConnection {
     private AppViewConnection() {
     }
     
+    /**
+     *
+     * @param props
+     * @return
+     * @throws BasicException
+     */
     public static Session createSession(AppProperties props) throws BasicException {
                
         try{
@@ -59,17 +65,11 @@ public class AppViewConnection {
                 AltEncrypter cypher = new AltEncrypter("cypherkey" + sDBUser);
                 sDBPassword = cypher.decrypt(sDBPassword.substring(6));
             }   
-
              return new Session(props.getProperty("db.URL"), sDBUser,sDBPassword);     
 
-        } catch (InstantiationException e) {
+// JG 16 May use multicatch
+        } catch (InstantiationException | IllegalAccessException | MalformedURLException | ClassNotFoundException e) {
             throw new BasicException(AppLocal.getIntString("message.databasedrivererror"), e);
-        } catch (IllegalAccessException eIA) {
-            throw new BasicException(AppLocal.getIntString("message.databasedrivererror"), eIA);
-        } catch (MalformedURLException eMURL) {
-            throw new BasicException(AppLocal.getIntString("message.databasedrivererror"), eMURL);
-        } catch (ClassNotFoundException eCNF) {
-            throw new BasicException(AppLocal.getIntString("message.databasedrivererror"), eCNF);
         } catch (SQLException eSQL) {
             throw new BasicException(AppLocal.getIntString("message.databaseconnectionerror"), eSQL);
         }   
