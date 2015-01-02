@@ -86,11 +86,11 @@ public interface DataRead {
     public Object getObject(int columnIndex) throws BasicException ;
     
 //    public int getColumnCount() throws DataException;
-
+ 
     /**
      *
      * @return
      * @throws BasicException
      */
-        public DataField[] getDataField() throws BasicException;
+        public DataField[] getDataField() throws BasicException;        
 }

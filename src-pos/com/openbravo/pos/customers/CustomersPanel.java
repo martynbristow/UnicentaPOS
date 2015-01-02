@@ -31,6 +31,7 @@ import com.openbravo.data.user.SaveProvider;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.panels.JPanelTable;
 import javax.swing.ListCellRenderer;
+import java.util.*;
 
 /**
  *
@@ -52,7 +53,7 @@ public class CustomersPanel extends JPanelTable {
     @Override
     protected void init() {        
         DataLogicCustomers dlCustomers  = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
-        tcustomers = dlCustomers.getTableCustomers();        
+        tcustomers = dlCustomers.getTableCustomers();
         jeditor = new CustomersView(app, dirty);    
         
     }

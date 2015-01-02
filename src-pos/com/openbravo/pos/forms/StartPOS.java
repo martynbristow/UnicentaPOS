@@ -31,6 +31,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import com.openbravo.pos.ticket.TicketInfo;
+
 
 // JG 16 May 2013 deprecated for pushingpixels
 // import org.jvnet.substance.SubstanceLookAndFeel;
@@ -108,12 +110,15 @@ public class StartPOS {
                     if (laf instanceof LookAndFeel){
                         UIManager.setLookAndFeel((LookAndFeel) laf);
                     } else if (laf instanceof SubstanceSkin) {                      
-                        SubstanceLookAndFeel.setSkin((SubstanceSkin) laf);                   
+                        SubstanceLookAndFeel.setSkin((SubstanceSkin) laf);
                     }
 // JG 6 May 2013 to multicatch
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {                
                     logger.log(Level.WARNING, "Cannot set Look and Feel", e);
                 }
+// JG July 2014 Hostname for Tickets
+                String hostname = config.getProperty("machine.hostname");
+                TicketInfo.setHostname(hostname);
                 
                 String screenmode = config.getProperty("machine.screenmode");
                 if ("fullscreen".equals(screenmode)) {

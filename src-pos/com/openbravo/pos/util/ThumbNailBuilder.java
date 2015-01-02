@@ -21,6 +21,7 @@ package com.openbravo.pos.util;
 
 import java.awt.image.*;
 import java.awt.*;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
@@ -63,7 +64,7 @@ public class ThumbNailBuilder {
         Image defimg;
         try {
             init(width, height, ImageIO.read(getClass().getClassLoader().getResourceAsStream(img)));               
-        } catch (Exception fnfe) {
+        } catch (IOException fnfe) {
             init(width, height, null);
         }                 
     }    
@@ -113,7 +114,7 @@ public class ThumbNailBuilder {
         label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);            
         Dimension d = label.getPreferredSize();
-        label.setBounds(0, 0, imgtext.getWidth(), d.height);  
+        label.setBounds(0, 0, imgtext.getWidth(), d.height);
         
         // The background
         Color c1 = new Color(0xff, 0xff, 0xff, 0x40);

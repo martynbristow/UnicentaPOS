@@ -118,7 +118,7 @@ public class CustomerTransaction {
     public Double getTotal() {
         return total;
     }
-
+    
     /**
      *
      * @return ticketline's product name string 

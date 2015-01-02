@@ -119,7 +119,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
     public void loadProperties(AppConfig config) {
 
         jtxtMachineHostname.setText(config.getProperty("machine.hostname"));
-        
+
         String lafclass = config.getProperty("swing.defaultlaf");
         jcboLAF.setSelectedItem(null);
         for (int i = 0; i < jcboLAF.getItemCount(); i++) {

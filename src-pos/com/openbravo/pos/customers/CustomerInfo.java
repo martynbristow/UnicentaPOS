@@ -61,7 +61,7 @@ public class CustomerInfo implements Serializable {
     protected String phone;
 
     /**
-     * Customer Primary telephone
+     * Customer Email
      */
     protected String email;    
     
@@ -164,7 +164,7 @@ public class CustomerInfo implements Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
+    
     /**
      *
      * @return email string
@@ -180,7 +180,7 @@ public class CustomerInfo implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
     /**
      *
      * @return
